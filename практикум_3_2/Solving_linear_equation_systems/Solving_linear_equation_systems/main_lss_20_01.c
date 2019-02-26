@@ -11,6 +11,8 @@ int main() {
  FILE *file;
  int a;
  double **A;
+ double *B;
+
 
  file = fopen("test.txt", "r");
  fscanf(file, "%d", &a);
@@ -24,6 +26,12 @@ int main() {
 	}
  }
 
+ B = (double*)malloc(a * sizeof(double));
+ 
+ for (int i = 0; i < a; i++) {
+	 fscanf(file, "%lf", &B[i]);
+ }
+
  printf("%d\n", a);
 
 
@@ -31,6 +39,9 @@ int main() {
 	for (int j = 0; j < a; j++) {
 	 printf("%lf ", A[i][j]);
 	}  printf("\n");
+ }
+ for (int i = 0; i < a; i++) {
+	 printf("%lf\n", B[i]);
  }
 
 
