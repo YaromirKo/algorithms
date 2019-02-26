@@ -10,48 +10,28 @@ int main() {
 
  FILE *file;
  int a;
- float **A;
- char temp[255];
+ double **A;
+
  file = fopen("test.txt", "r");
- ///fgets(arr, '\n', file);
  fscanf(file, "%d", &a);
- A = (float**)malloc(a * sizeof(float*));
 
- //for (int i = 0; i < a; i++) {
-	//A[i] = (float*)malloc(a * sizeof(float));
-	//for (int j = 0; j < a; j++) {
-	// &A[i][j];
-	//}
- //}
- /*int z = 0;
- while ((temp[z] = fgetc(file)) != EOF) {
-	printf("%d", z);
-	if (temp[z] == ' ' || temp[z] == '\n') {
-	 break;
+ A = (double**)malloc(a * sizeof(double*));
+
+ for (int i = 0; i < a; i++) {
+	A[i] = (double*)malloc(a * sizeof(double));
+	for (int j = 0; j < a; j++) {
+	 fscanf(file, "%lf", &A[i][j]);
 	}
-	printf("%c\n", temp[z]);
-
-	z++;
-
- }*/
-
- fgets(temp, '\n', file);
- printf("%s\n", temp);
-
-
-
- /*for (int z = 0; (temp[z] = fgetc(file)) != EOF; z++) {
-	printf("%d", z);
-	if (temp[z] == ' ' || temp[z] == '\n') {
-	 break;
-	}
-	printf("%c\n", temp[z]);
- }*/
-
- 
- ///int a = atoi(arr);
+ }
 
  printf("%d\n", a);
+
+
+ for (int i = 0; i < a; i++) {
+	for (int j = 0; j < a; j++) {
+	 printf("%lf ", A[i][j]);
+	}  printf("\n");
+ }
 
 
 
