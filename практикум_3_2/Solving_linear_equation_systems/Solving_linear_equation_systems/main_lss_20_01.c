@@ -12,7 +12,7 @@ int main() {
  double **A;
  double *B;
 
- double *A_tmp;
+ double *answer;
  double **tem_vec;
 
  file = fopen("test.txt", "r");
@@ -20,10 +20,7 @@ int main() {
 
  A = (double**)malloc(a * sizeof(double*));
  tem_vec = (double**)malloc(a * sizeof(double*));
-
- A_tmp = (double*)malloc(a * sizeof(double));
-
-
+ answer = (double*)malloc(a * sizeof(double));
 
  for (int i = 0; i < a; i++) {
 	A[i] = (double*)malloc(a * sizeof(double));
@@ -94,13 +91,13 @@ int main() {
 	 some_tmp = some_tmp - A[i][j] * B[j];
 
 	}
-	A_tmp[i] = some_tmp;
+	answer[i] = some_tmp;
  }
 
 
 
  for (int i = 0; i < a; i++) {
-	printf("x_%d = %lf\n", i + 1, A_tmp[i]);
+	printf("x_%d = %lf\n", i + 1, answer[i]);
  }printf("\n");
 
 
@@ -109,7 +106,7 @@ int main() {
  for (int i = 0; i < a; i++) {
 	double check = 0;
 	for (int j = 0; j < a; j++) {
-	 check += A_tmp[j] * tem_vec[i][j];
+	 check += answer[j] * tem_vec[i][j];
 	}
 	printf("%lf\n", check);
 	check = 0;
