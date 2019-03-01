@@ -53,6 +53,11 @@ int main() {
 
 
  ////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////
+
 
 
  for (int i = 0; i < a; i++) {
@@ -68,6 +73,20 @@ int main() {
 	 }
 	}
 	if (blabla == 1) {
+	 ////////////////////////////////////////////////////////////////////////////////////
+	 printf("start change column\n");
+	 for (int i = 0; i < a; i++) {
+		for (int j = 0; j < a; j++) {
+		 printf("%lf ", A[i][j]);
+		}
+		printf(" %lf\n", B[i]);
+	 }printf("\n");
+	 ////////////////////////////////////////////////////////////////////////////////////
+	 printf("\n%d ", i + 1);
+	 printf(" %lf ", max);
+	 printf(" %d\n", column + 1);
+
+
 	 double change_column;
 	 change_column = tmp[i];
 	 tmp[i] = tmp[column];
@@ -80,8 +99,18 @@ int main() {
 	 }
 	 blabla = 0;
 	}
-	
+	////////////////////////////////////////////////////////////////////////////////////
+	//printf("start change column\n");
+	//for (int i = 0; i < a; i++) {
+	// for (int j = 0; j < a; j++) {
+	//	printf("%lf ", A[i][j]);
+	// }
+	// printf(" %lf\n", B[i]);
+	//}printf("\n");
+	////////////////////////////////////////////////////////////////////////////////////
+
 	double save_1 = A[i][i];
+	double save_2;
 	B[i] = B[i] / A[i][i];
 
 	for (int j = 0; j < a; j++) {
@@ -89,14 +118,30 @@ int main() {
 	}
 
 	for (int j = i + 1; j < a; j++) {
-	 save_1 = A[j][j - 1];
-	 B[j] = B[j] - B[i] * A[j][j - 1];
+	 save_2 = A[j][i];
+	 B[j] = B[j] - B[i] * A[j][i];
 
 	 for (int k = i; k < a; k++) {
-		A[j][k] = A[j][k] - save_1 * A[i][k];
+		A[j][k] = A[j][k] - save_2 * A[i][k];
 	 }
 	}
+	////////////////////////////////////////////////////////////////////////////////////
+	//printf("start opiration\n");
+	//for (int i = 0; i < a; i++) {
+	// for (int j = 0; j < a; j++) {
+	//	printf("%lf ", A[i][j]);
+	// }
+	// printf(" %lf\n", B[i]);
+	//}printf("\n");
+	////////////////////////////////////////////////////////////////////////////////////
+
  }
+ ////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////
+
 
  	for (int i = 0; i < a; i++) {
 	 for (int j = 0; j < a; j++) {
@@ -105,157 +150,64 @@ int main() {
 	 printf(" %lf\n", B[i]);
 	}printf("\n");
 
+	printf("\n");
+	for (int i = 0; i < a; i++) {
+	 printf("%d %d\n", i, (int)tmp[i]);
+	} printf("\n");
+
 	double some_tmp;
 
 	for (int i = a - 1; i > -1; i--) {
 	 some_tmp = B[i];
-
+	 int abc = 0;
 	 for (int j = a - 1; j > i; j--) {
-		int abc = 0;
 		for (int k = 0; k < a; k++) {
 		 if (tmp[k] == j) {
-			abc = tmp[k];
+			abc = k;
 			break;
 		 }
 		}
 		some_tmp -= A[i][j] * X[abc];
 	 }
-	 X[i] = some_tmp;
-	}
-
-	for (int i = 0; i < a; i++)
-	{
-	 printf("%lf ", X[i]);
-	}printf("\n");
-
-	for (int i = 0; i < a; i++) {
-	 printf("x_%d = %lf\n", i + 1, X[i]);
-	}printf("\n");
-
-
-	//for (int i = 0; i < a; i++) {
-	// double abcd = 0;
-	// for (int j = 0; j < a; j++) {
-	//	abcd += A_true[i][j] * X[j];
-	// }
-	// printf("%lf\n", abcd);
-	//}
-
-
-
-
-
- ////////////////////////////////////////////////////////////////////////////////////
- /*for (int i = 0; i < a; i++) {
-	double max = A[i][i];
-	int change = 0;
-	int column;
-	for (int j = 0; j < a; j++) {
-	 if (abs(max) < abs(A[i][j])) {
-		max = A[i][j];
-		column = j;
-		change = 1;
-		printf("%d\n", j);
-	 }
-	}
-
-	if (change == 1) {
-
-	 for (int q = 0; q < a; q++) {
-	 } printf("\n");
-		printf("%lf ", tmp[q]);
-	 printf("change\n");
-	 double tr;
-	 tmp[i] = column;
-	 tmp[column] = i;
-	 for (int k = i; k < a; k++) {
-		tr = A[k][i];
-		A[k][i] = A[k][column];
-		A[k][column] = tr;
-	 }
-	 change = 0;
-	 for (int q = 0; q < a; q++) {
-		printf("%lf ", tmp[q]);
-	 } printf("\n");
-	 printf("use\n");
-	}
-
-	for (int i = 0; i < a; i++) {
-	 for (int j = 0; j < a; j++) {
-		printf("%lf ", A[i][j]);
-	 }
-	 printf(" %lf\n", B[i]);
-	}printf("\n");
-	B[i] = B[i] / max;
-	double now_el = max;
-
-	for (int j = i; j < a; j++) {
-	 A[i][j] = A[i][j] / now_el;
-
-	}
-
-	for (int j = i + 1; j < a; j++) {
-	 B[j] = B[j] - B[i] * A[j][i];
-	 now_el = A[j][i];
-
-	 for (int k = i; k < a; k++) {
-		printf("\n%lf %lf %lf %lf\n", A[j][k], " = ", A[j][k], " - ", now_el, " * ", A[i][k]);
-		A[j][k] = A[j][k] - now_el * A[i][k];
-	 }
-	}
-	for (int i = 0; i < a; i++) {
-	 for (int j = 0; j < a; j++) {
-		printf("%lf ", A[i][j]);
-	 }
-	 printf(" %lf\n", B[i]);
-	}printf("\n");
- }
- 
- printf("///////////////////////////////////////////////////\n");
- for (int i = 0; i < a; i++) {
-	for (int j = 0; j < a; j++) {
-	 printf("%lf ", A[i][j]);
-	}
-	printf(" %lf\n", B[i]);
- }printf("\n");
- printf("///////////////////////////////////////////////////\n");
-
-
-
- 
- double some_tmp;
-
- for (int i = a - 1; i > -1; i--) {
-	some_tmp = B[i];
-	
-	for (int j = a - 1 ; j > i; j--) {
-	 for (int w = 0; w < a; w++)
-	 {
-		if (tmp[w] == j) {
-		 some_tmp = some_tmp - A[i][w] * B[j];
+	 for (int k = 0; k < a; k++) {
+		if (tmp[k] == i) {
+		 abc = k;
+		 break;
 		}
 	 }
+	 X[abc] = some_tmp;
 	}
-	X[i] = some_tmp;
- }
+
+	for (int i = 0; i < a; i++) {
+	 printf("%d %lf %d %lf\n", i, X[i], (int)tmp[i], X[(int)tmp[i]] );
+	}printf("\n");
 
 
-
- for (int i = 0; i < a; i++) {
-	printf("x_%d = %lf\n", i + 1, X[i]);
- }printf("\n");
-
+	for (int i = 0; i < a; i++) {
+	 printf("x_%d = %lf\n", i + 1, X[(int)tmp[i]]);
+	}printf("\n");
 
 
- 
- for (int i = 0; i < a; i++) {
-	double check = 0;
-	for (int j = 0; j < a; j++) {
-	 check += X[j] * A_true[i][j];
+	//int abcde;
+	//for (int i = 0; i < a; i++) {
+	// for (int k = 0; k < a; k++) {
+	//	if (tmp[k] == i) {
+	//	 abcde = k;
+	//	 break;
+	//	}
+	// }
+	// printf("x_%d = %lf\n", i + 1, X[abcde]);
+	//}printf("\n");
+
+
+	for (int i = 0; i < a; i++) {
+	 double abcd = 0;
+	 for (int j = 0; j < a; j++) {
+		abcd += A_true[i][j] * X[j];
+	 }
+	 printf("%lf\n", abcd);
 	}
-	printf("%lf\n", check);
-	check = 0;
- }*/
+
 
  system("pause");
  return 0;
