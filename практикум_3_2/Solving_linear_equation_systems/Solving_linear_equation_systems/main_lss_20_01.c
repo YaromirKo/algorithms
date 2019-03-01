@@ -1,9 +1,22 @@
-﻿/// Метод Гаусса с выбором главного элемента по строке.
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <time.h>
-#pragma warning(disable : 4996)
+﻿#include "lss_20_01.h"
+
+
+/*1. Программа должна состоять из двух модулей 
+		 - интерфейсного (обеспечивающего разбор командной строки, 
+											файловый ввод - вывод, выделение памяти, обработку ошибок и т.д.) 
+		и вычислительного (обеспечивающего непосредственное решение задачи).*/
+
+/*Печать общего времени выполнения программы - строго обязательная опция.
+tmp - массив дополнительной памяти (если она требуется методу). Размер массива дополнительной памяти должен определяться функцией
+size_t lss_memsize_SS_NN(int n)
+Получать в этой подпрограмме дополнительную информацию извне через глобальные переменные 
+(за исключением двух глобальных переменных, контролирующих режимы работы "-d" и "-e"), 
+общие блоки, включаемые файлы и т. п. запрещается. Выделение памяти в подпрограмме также запрещается; 
+вся дополнительная память должна передаваться через вектор tmp. */
+
+size_t lss_memsize_SS_NN(int n) {
+
+}
 
 int main() {
 
@@ -14,9 +27,11 @@ int main() {
 
  double *X;
  double *tmp;
+ char path_in[256] = "lss_20_01_in.txt";
+ char path_out[256] = "lss_20_01_out.txt";
 
 
- file = fopen("test.txt", "r");
+ file = fopen(path_in, "r");
  fscanf(file, "%d", &a);
 
  A = (double**)malloc(a * sizeof(double*));
@@ -47,7 +62,7 @@ int main() {
 	 fscanf(file, "%lf", &B[i]);
 	 B_tmp[i] = B[i];
  } printf("%d\n", a);
-
+ fclose(file);
 
  for (int i = 0; i < a; i++) {
 	for (int j = 0; j < a; j++) {
@@ -57,83 +72,14 @@ int main() {
  }printf("\n");
  ////////////////////////////////////////////////////////////////////////////////////
  ////////////////////////////////////////////////////////////////////////////////////
- for (int i = 0; i < a; i++) {
-	double max = A[i][i];
-	int column;
-	int swap_сolumns = 0;
-	for (int j = i; j < a; j++) {
-	 if (abs(max) < abs(A[i][j])) {
-		column = j;
-		max = A[i][j];
-		swap_сolumns = 1;
-	 }
-	}
-	if (swap_сolumns == 1) {
-	 double change_column;
-	 change_column = tmp[i];
-	 tmp[i] = tmp[column];
-	 tmp[column] = change_column;
+ lss_20_01(a, A, B, X, tmp);
 
-	 for (int j = 0; j < a; j++) {
-		change_column = A[j][i];
-		A[j][i] = A[j][column];
-		A[j][column] = change_column;
-	 }
-	 swap_сolumns = 0;
-	}
-	//printf("start change column\n");
-	//for (int i = 0; i < a; i++) {
-	// for (int j = 0; j < a; j++) {
-	//	printf("%lf ", A[i][j]);
-	// }
-	// printf(" %lf\n", B[i]);
-	//}printf("\n");
-	double save_1 = A[i][i];
-	double save_2;
-	B[i] = B[i] / A[i][i];
-
-	for (int j = 0; j < a; j++) {
-	 A[i][j] = A[i][j] / save_1;
-	}
-
-	for (int j = i + 1; j < a; j++) {
-	 save_2 = A[j][i];
-	 B[j] = B[j] - B[i] * A[j][i];
-
-	 for (int k = i; k < a; k++) {
-		A[j][k] = A[j][k] - save_2 * A[i][k];
-	 }
-	}
-	//printf("start opiration\n");
-	//for (int i = 0; i < a; i++) {
-	// for (int j = 0; j < a; j++) {
-	//	printf("%lf ", A[i][j]);
-	// }
-	// printf(" %lf\n", B[i]);
-	//}printf("\n");
- }
- ////////////////////////////////////////////////////////////////////////////////////
- ////////////////////////////////////////////////////////////////////////////////////
- 	for (int i = 0; i < a; i++) {
-	 for (int j = 0; j < a; j++) {
-		printf("%lf ", A[i][j]);
-	 }
-	 printf(" %lf\n", B[i]);
-	}printf("\n");
-
-	double some_tmp;
-
-	for (int i = a - 1; i > -1; i--) {
-	 some_tmp = B[i];
-	 int abc = tmp[i];
-	 for (int j = a - 1; j > i; j--) {
-		some_tmp -= A[i][j] * X[(int)tmp[j]];
-	 }
-	 X[abc] = some_tmp;
-	}
-
+	file = fopen(path_out, "w");
+	fprintf(file, "%d\n", a);
 	for (int i = 0; i < a; i++) {
+	 fprintf(file, "%1.9lf\n", X[i]);
 	 printf("x_%d = %lf\n", i + 1, X[i]);
+
 	}printf("\n");
 
 
@@ -146,6 +92,7 @@ int main() {
 	}
 
 
+	fclose(file);
  system("pause");
  return 0;
 }
