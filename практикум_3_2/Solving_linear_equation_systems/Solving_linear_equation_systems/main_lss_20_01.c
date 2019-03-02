@@ -32,7 +32,6 @@ int main() {
  char path_in[256] = "lss_20_01_in.txt";
  char path_out[256] = "lss_20_01_out.txt";
 
-
  file = fopen(path_in, "r");
  fscanf(file, "%d", &n);
 
@@ -41,19 +40,14 @@ int main() {
  X = (double*)malloc(n * sizeof(double));
  tmp = (double*)malloc(n * sizeof(double));
 
- for (int i = 0; i < n; i++) {
-	tmp[i] = i;
- }
+ for (int i = 0; i < n; i++) { tmp[i] = i; }
 
  double **A_true;
  double *B_tmp;
  A_true = (double**)malloc(n * sizeof(double*));
  B_tmp = (double*)malloc(n * sizeof(double));
 
-
-
  for (int i = 0; i < n; i++) {
-	//A[i] = (double*)malloc(a * sizeof(double));
 	A_true[i] = (double*)malloc(n * sizeof(double));
 	for (int j = 0; j < n; j++) {
 	 fscanf(file, "%lf", &A[i * n + j]);
@@ -69,12 +63,12 @@ int main() {
 
  for (int i = 0; i < n; i++) {
 	for (int j = 0; j < n; j++) {
-	 printf("%*lf", 15, A[i * n + j]);
+	 printf("%*lf", 13, A[i * n + j]);
 	}  
-	printf("%*lf\n", 15, B[i]);
+	printf("%*lf\n", 13, B[i]);
  }printf("\n");
- ////////////////////////////////////////////////////////////////////////////////////
- ////////////////////////////////////////////////////////////////////////////////////
+
+
   lss_20_01(n, A, B, X, tmp);
 
 	file = fopen(path_out, "w");
@@ -95,7 +89,7 @@ int main() {
 	}
 
 
-	fclose(file);
+ fclose(file);
  system("pause");
  return 0;
 }

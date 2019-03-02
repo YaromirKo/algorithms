@@ -10,10 +10,6 @@
 
 int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 
- 
-
- //printf("\n%lf\n", ELEM(ELEM(A, n, i, j)A, 4, 1, 2));
-
  for (int i = 0; i < n; i++) {
 	double max = ELEM(A, n, i, i);
 	int column;
@@ -70,12 +66,11 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	}printf("\n");*/
  }
  ////////////////////////////////////////////////////////////////////////////////////
- ////////////////////////////////////////////////////////////////////////////////////
  for (int i = 0; i < n; i++) {
 	for (int j = 0; j < n; j++) {
-	 printf("%lf ", ELEM(A, n, i, j));
+	 printf("%*lf", 13, ELEM(A, n, i, j));
 	}
-	printf(" %lf\n", B[i]);
+	printf("%*lf\n", 13, B[i]);
  }printf("\n");
 
  double some_tmp;
