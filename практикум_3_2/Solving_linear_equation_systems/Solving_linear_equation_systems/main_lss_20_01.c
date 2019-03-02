@@ -14,59 +14,57 @@ size_t lss_memsize_SS_NN(int n)
 общие блоки, включаемые файлы и т. п. запрещается. Выделение памяти в подпрограмме также запрещается; 
 вся дополнительная память должна передаваться через вектор tmp. */
 
-size_t lss_memsize_SS_NN(int n) {
-
-}
+size_t lss_memsize_20_01(int n) { (double*)malloc(n * sizeof(double)); }
 
 int main() {
 
- FILE *file;
+	FILE *file;
 
- int n;
+	int n;
 
- double *A;
- double *B;
- double *X;
- double *tmp;
+	double *A;
+	double *B;
+	double *X;
+	double *tmp;
 
- char path_in[256] = "lss_20_01_in.txt";
- char path_out[256] = "lss_20_01_out.txt";
+	char path_in[256] = "lss_20_01_in.txt";
+	char path_out[256] = "lss_20_01_out.txt";
 
- file = fopen(path_in, "r");
- fscanf(file, "%d", &n);
+	file = fopen(path_in, "r");
+	fscanf(file, "%d", &n);
 
- A = (double*)malloc(n * n * sizeof(double));
- B = (double*)malloc(n * sizeof(double));
- X = (double*)malloc(n * sizeof(double));
- tmp = (double*)malloc(n * sizeof(double));
+	A = (double*)malloc(n * n * sizeof(double));
+	B = (double*)malloc(n * sizeof(double));
+	X = (double*)malloc(n * sizeof(double));
+	tmp = lss_memsize_20_01(n);
 
- for (int i = 0; i < n; i++) { tmp[i] = i; }
+	for (int i = 0; i < n; i++) { tmp[i] = i; }
 
- double **A_true;
- double *B_tmp;
- A_true = (double**)malloc(n * sizeof(double*));
- B_tmp = (double*)malloc(n * sizeof(double));
+	double **A_true;
+	double *B_tmp;
+	A_true = (double**)malloc(n * sizeof(double*));
+	B_tmp = (double*)malloc(n * sizeof(double));
 
- for (int i = 0; i < n; i++) {
-	A_true[i] = (double*)malloc(n * sizeof(double));
-	for (int j = 0; j < n; j++) {
-	 fscanf(file, "%lf", &A[i * n + j]);
-	 A_true[i][j] = A[i * n + j];
+	for (int i = 0; i < n; i++) {
+	 A_true[i] = (double*)malloc(n * sizeof(double));
+	 for (int j = 0; j < n; j++) {
+		fscanf(file, "%lf", &A[i * n + j]);
+		A_true[i][j] = A[i * n + j];
+	 }
 	}
- }
  
- for (int i = 0; i < n; i++) {
-	 fscanf(file, "%lf", &B[i]);
-	 B_tmp[i] = B[i];
- } printf("%d\n", n);
- fclose(file);
+	for (int i = 0; i < n; i++) {
+		fscanf(file, "%lf", &B[i]);
+		B_tmp[i] = B[i];
+	} printf("%d\n", n);
+	fclose(file);
 
- for (int i = 0; i < n; i++) {
-	for (int j = 0; j < n; j++) {
-	 printf("%*lf", 13, A[i * n + j]);
-	}  
-	printf("%*lf\n", 13, B[i]);
- }printf("\n");
+	for (int i = 0; i < n; i++) {
+	 for (int j = 0; j < n; j++) {
+		printf("%*lf", 13, A[i * n + j]);
+	 }  
+	 printf("%*lf\n", 13, B[i]);
+	}printf("\n");
 
 
   lss_20_01(n, A, B, X, tmp);
@@ -76,7 +74,6 @@ int main() {
 	for (int i = 0; i < n; i++) {
 	 fprintf(file, "%1.9lf\n", X[i]);
 	 printf("x_%d = %lf\n", i + 1, X[i]);
-
 	}printf("\n");
 
 
@@ -97,7 +94,15 @@ int main() {
 	}
 
 
- fclose(file);
- system("pause");
- return 0;
+
+
+	free(A);
+	free(B);
+	free(X);
+	free(tmp);
+
+
+	fclose(file);
+	system("pause");
+	return 0;
 }

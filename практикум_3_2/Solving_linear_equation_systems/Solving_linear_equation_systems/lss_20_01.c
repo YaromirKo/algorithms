@@ -9,6 +9,7 @@
 Метод решения может быть не применим к системе, например, в силу вырожденности матрицы системы для метода решения через построение LU разложения. */
 
 int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
+
  int p = 1;
  int this_is_null = 0;
  int column;
@@ -22,8 +23,7 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	max = ELEM(A, n, i, i);
 
 	for (int j = i; j < n; j++) {
-	 printf("%5.9lf ", ELEM(A, n, i, j));
-	 if (fabs(fabs(ELEM(A, n, i, j)) - 1e-6) <= 1e-6) {
+	 if (fabs(ELEM(A, n, i, j)) <= 1e-6) {
 		this_is_null++;
 	 }
 	 if (fabs(max) < fabs(ELEM(A, n, i, j))) {
@@ -32,22 +32,16 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 		swap_сolumns = 1;
 	 }
 	}
-	printf("\n%d %d\n", this_is_null, n - i);
 	if (n - i == this_is_null) {
-	 if (fabs(B[i] - 1e-6) <= 1e-6) {
+	 if (fabs(B[i]) <= 1e-6) {
 		X[(int)tmp[i]] = 0;
 		this_is_null = 0;
 		continue;
 	 }
-	 else {
-		return 1;
-	 }
-	 this_is_null = 0;
-	 continue;
+	 else { return 1; }
 	}
-	else {
-	 this_is_null = 0;
-	}
+	else { this_is_null = 0; }
+
 	if (swap_сolumns == 1) {
 	 double change_column;
 	 change_column = tmp[i];
