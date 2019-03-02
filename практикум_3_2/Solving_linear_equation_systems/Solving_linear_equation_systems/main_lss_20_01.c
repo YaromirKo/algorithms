@@ -85,6 +85,14 @@ int main() {
 	 for (int j = 0; j < n; j++) {
 		abcd += A_true[i][j] * X[j];
 	 }
+	 printf("%5.9lf\n", abs(abcd) - abs(B_tmp[i]));
+	}printf("\n");
+
+	for (int i = 0; i < n; i++) {
+	 double abcd = 0;
+	 for (int j = 0; j < n; j++) {
+		abcd += A_true[i][j] * X[j];
+	 }
 	 printf("%5.5lf=%5.5lf\n", abcd, B_tmp[i]);
 	}
 

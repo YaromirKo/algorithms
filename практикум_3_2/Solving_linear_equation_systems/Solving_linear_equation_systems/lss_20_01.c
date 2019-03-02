@@ -9,17 +9,44 @@
 Метод решения может быть не применим к системе, например, в силу вырожденности матрицы системы для метода решения через построение LU разложения. */
 
 int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
+ int p = 1;
+ int this_is_null = 0;
+ int column;
+ int swap_сolumns = 0;
+ 
+ double max;
+ double save_1;
 
  for (int i = 0; i < n; i++) {
-	double max = ELEM(A, n, i, i);
-	int column;
-	int swap_сolumns = 0;
+
+	max = ELEM(A, n, i, i);
+
 	for (int j = i; j < n; j++) {
-	 if (abs(max) < abs(ELEM(A, n, i, j))) {
+	 printf("%5.9lf ", ELEM(A, n, i, j));
+	 if (fabs(fabs(ELEM(A, n, i, j)) - 1e-6) <= 1e-6) {
+		this_is_null++;
+	 }
+	 if (fabs(max) < fabs(ELEM(A, n, i, j))) {
 		column = j;
 		max = ELEM(A, n, i, j);
 		swap_сolumns = 1;
 	 }
+	}
+	printf("\n%d %d\n", this_is_null, n - i);
+	if (n - i == this_is_null) {
+	 if (fabs(B[i] - 1e-6) <= 1e-6) {
+		X[(int)tmp[i]] = 0;
+		this_is_null = 0;
+		continue;
+	 }
+	 else {
+		return 1;
+	 }
+	 this_is_null = 0;
+	 continue;
+	}
+	else {
+	 this_is_null = 0;
 	}
 	if (swap_сolumns == 1) {
 	 double change_column;
@@ -34,36 +61,40 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	 }
 	 swap_сolumns = 0;
 	}
-	/*printf("start change column\n");
-	for (int i = 0; i < a; i++) {
-	for (int j = 0; j < a; j++) {
-	printf("%lf ", ELEM(A, n, i, j)A[i][j]);
+	if (1 == p) {
+	 printf("start change column\n");
+	 for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+		 printf("%*lf", 13, ELEM(A, n, i, j));
+		}
+		printf("%*lf\n", 13, B[i]);
+	 }printf("\n");
 	}
-	printf(" %lf\n", B[i]);
-	}printf("\n");*/
-	double save_1 = ELEM(A, n, i, i);
-	double save_2;
+	save_1 = ELEM(A, n, i, i);
 	B[i] = B[i] / ELEM(A, n, i, i);
 
-	for (int j = 0; j < n; j++) {
+	for (int j = i; j < n; j++) {
 	 ELEM(A, n, i, j) = ELEM(A, n, i, j) / save_1;
 	}
 
 	for (int j = i + 1; j < n; j++) {
-	 save_2 = ELEM(A, n, j, i);
+	 save_1 = ELEM(A, n, j, i);
 	 B[j] = B[j] - B[i] * ELEM(A, n, j, i);
 
 	 for (int k = i; k < n; k++) {
-		ELEM(A, n, j, k) = ELEM(A, n, j, k) - save_2 * ELEM(A, n, i, k);
+		ELEM(A, n, j, k) = ELEM(A, n, j, k) - save_1 * ELEM(A, n, i, k);
 	 }
+	 this_is_null = 0;
 	}
-	/*printf("start opiration\n");
-	for (int i = 0; i < a; i++) {
-	for (int j = 0; j < a; j++) {
-	printf("%lf ", ELEM(A, n, i, j)A[i][j]);
+	if (1 == p) {
+	 printf("algoritm\n");
+	 for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+		 printf("%*lf", 13, ELEM(A, n, i, j));
+		}
+		printf("%*lf\n", 13, B[i]);
+	 }printf("\n");
 	}
-	printf(" %lf\n", B[i]);
-	}printf("\n");*/
  }
  ////////////////////////////////////////////////////////////////////////////////////
  for (int i = 0; i < n; i++) {
