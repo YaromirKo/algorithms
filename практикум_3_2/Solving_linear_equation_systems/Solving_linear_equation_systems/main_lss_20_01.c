@@ -21,71 +21,74 @@ size_t lss_memsize_SS_NN(int n) {
 int main() {
 
  FILE *file;
- int a;
- double **A;
- double *B;
 
+ int n;
+
+ double *A;
+ double *B;
  double *X;
  double *tmp;
+
  char path_in[256] = "lss_20_01_in.txt";
  char path_out[256] = "lss_20_01_out.txt";
 
 
  file = fopen(path_in, "r");
- fscanf(file, "%d", &a);
+ fscanf(file, "%d", &n);
 
- A = (double**)malloc(a * sizeof(double*));
- X = (double*)malloc(a * sizeof(double));
- tmp = (double*)malloc(a * sizeof(double));
+ A = (double*)malloc(n * n * sizeof(double));
+ B = (double*)malloc(n * sizeof(double));
+ X = (double*)malloc(n * sizeof(double));
+ tmp = (double*)malloc(n * sizeof(double));
 
- for (int i = 0; i < a; i++) {
+ for (int i = 0; i < n; i++) {
 	tmp[i] = i;
  }
 
  double **A_true;
  double *B_tmp;
- A_true = (double**)malloc(a * sizeof(double*));
- B_tmp = (double*)malloc(a * sizeof(double));
+ A_true = (double**)malloc(n * sizeof(double*));
+ B_tmp = (double*)malloc(n * sizeof(double));
 
 
 
- for (int i = 0; i < a; i++) {
-	A[i] = (double*)malloc(a * sizeof(double));
-	A_true[i] = (double*)malloc(a * sizeof(double));
-	for (int j = 0; j < a; j++) {
-	 fscanf(file, "%lf", &A[i][j]);
-	 A_true[i][j] = A[i][j];
+ for (int i = 0; i < n; i++) {
+	//A[i] = (double*)malloc(a * sizeof(double));
+	A_true[i] = (double*)malloc(n * sizeof(double));
+	for (int j = 0; j < n; j++) {
+	 fscanf(file, "%lf", &A[i * n + j]);
+	 A_true[i][j] = A[i * n + j];
 	}
  }
- B = (double*)malloc(a * sizeof(double));
- for (int i = 0; i < a; i++) {
+ 
+ for (int i = 0; i < n; i++) {
 	 fscanf(file, "%lf", &B[i]);
 	 B_tmp[i] = B[i];
- } printf("%d\n", a);
+ } printf("%d\n", n);
  fclose(file);
 
- for (int i = 0; i < a; i++) {
-	for (int j = 0; j < a; j++) {
-	 printf("%lf ", A[i][j]);
+ for (int i = 0; i < n; i++) {
+	for (int j = 0; j < n; j++) {
+	 printf("%*lf", 15, A[i * n + j]);
 	}  
-	printf(" %lf\n", B[i]);
+	printf("%*lf\n", 15, B[i]);
  }printf("\n");
  ////////////////////////////////////////////////////////////////////////////////////
  ////////////////////////////////////////////////////////////////////////////////////
- lss_20_01(a, A, B, X, tmp);
+  lss_20_01(n, A, B, X, tmp);
 
 	file = fopen(path_out, "w");
-	fprintf(file, "%d\n", a);
-	for (int i = 0; i < a; i++) {
+	fprintf(file, "%d\n", n);
+	for (int i = 0; i < n; i++) {
 	 fprintf(file, "%1.9lf\n", X[i]);
 	 printf("x_%d = %lf\n", i + 1, X[i]);
 
 	}printf("\n");
 
 
-	for (int i = 0; i < a; i++) {
+	for (int i = 0; i < n; i++) {
 	 double abcd = 0;
-	 for (int j = 0; j < a; j++) {
+	 for (int j = 0; j < n; j++) {
 		abcd += A_true[i][j] * X[j];
 	 }
 	 printf("%5.5lf=%5.5lf\n", abcd, B_tmp[i]);
