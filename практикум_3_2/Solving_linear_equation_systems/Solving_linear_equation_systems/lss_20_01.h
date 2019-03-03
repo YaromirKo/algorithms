@@ -7,3 +7,6 @@
 #pragma warning(disable : 4996)
 
 int lss_20_01(int n, double* A, double* B, double* X, double* tmp);
+
+int var_for_debug;
+int var_for_errors;

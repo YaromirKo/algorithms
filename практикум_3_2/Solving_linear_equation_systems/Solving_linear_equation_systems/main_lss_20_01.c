@@ -5,16 +5,7 @@
 											файловый ввод - вывод, выделение памяти, обработку ошибок и т.д.) 
 		и вычислительного (обеспечивающего непосредственное решение задачи).*/
 
-/*Печать общего времени выполнения программы - строго обязательная опция.
-tmp - массив дополнительной памяти (если она требуется методу). Размер массива дополнительной памяти должен определяться функцией
-size_t lss_memsize_SS_NN(int n)
-Получать в этой подпрограмме дополнительную информацию извне через глобальные переменные 
-(за исключением двух глобальных переменных, контролирующих режимы работы "-d" и "-e"), 
-общие блоки, включаемые файлы и т. п. запрещается. Выделение памяти в подпрограмме также запрещается; 
-вся дополнительная память должна передаваться через вектор tmp. */
-
-size_t lss_memsize_20_01(int n) { return  n * sizeof(double); }
-
+size_t lss_memsize_20_01(int n) { return  (double*)malloc(n * sizeof(double)); }
 
 int check_str(char * first, char * last) {
 
@@ -62,6 +53,8 @@ void set_name_file(int num, char * str, char * path_in, char * path_out) {
 
 void print_help() { printf("\nUsage: lss [input_file_name] [output_file_name] [options]\nWhere options include :\n -d    print debug messages[default OFF]\n -e    print errors[default OFF]\n -p    print matrix[default OFF]\n -t    print execution time[default OFF]\n -h, -? print this and exit\nDefault input_file_name value is lss_00_00_in.txt, default output_file_name value is lss_00_00_out.txt.\n");}
 
+double time_spent(clock_t start, clock_t end) { return (double)(end - start) / CLOCKS_PER_SEC; }
+
 int main(int argc, char *argv[]) {
 
 	FILE *file;
@@ -73,7 +66,11 @@ int main(int argc, char *argv[]) {
 	double *X;
 	double *tmp;
 
+	clock_t start, end;
+
+	int print__time = 0;
 	int print__help = 0;
+	int print__matrix = 0;
 
 	char path_in[256] = "lss_20_01_in.txt";
 	char path_out[256] = "lss_20_01_out.txt";
@@ -82,23 +79,21 @@ int main(int argc, char *argv[]) {
 
 	 if ((argc > 1 || argc > 2) && check_name_txt(argv[i]) == 0) { set_name_file(i, argv[i], path_in, path_out); }
 	 else if (check_str(argv[i], "-h") == 0 || check_str(argv[i], "-?") == 0) { print_help(); print__help = 1; }
-	 else if (check_str(argv[i], "-d") == 0) { printf("1\n"); }
-	 else if (check_str(argv[i], "-e") == 0) { printf("2\n"); }
-	 else if (check_str(argv[i], "-p") == 0) { printf("3\n"); }
-	 else if (check_str(argv[i], "-t") == 0) { printf("4\n"); }
-	 else { printf("input error, enter for '-h' or '-?', to specify the input\n"); print__help = 1; }
+	 else if (check_str(argv[i], "-d") == 0) { var_for_debug = 1; }
+	 else if (check_str(argv[i], "-e") == 0) { var_for_errors = 1; }
+	 else if (check_str(argv[i], "-p") == 0) { print__matrix = 1; }
+	 else if (check_str(argv[i], "-t") == 0) { print__time = 1; }
+	 else { printf("input error, enter for '-h' or '-?', to specify the input\n"); print__help = 1; break; }
 	}
 
 	if (print__help == 0) {
 
 	 file = fopen(path_in, "r");
 	 fscanf(file, "%d", &n);
-
 	 A = (double*)malloc(n * n * sizeof(double));
 	 B = (double*)malloc(n * sizeof(double));
 	 X = (double*)malloc(n * sizeof(double));
-	 tmp = (double*)malloc(lss_memsize_20_01(n));
-
+	 tmp = lss_memsize_20_01(n);
 	 for (int i = 0; i < n; i++) {
 		tmp[i] = i;
 	 }
@@ -107,7 +102,6 @@ int main(int argc, char *argv[]) {
 	 double *B_tmp;
 	 A_true = (double**)malloc(n * sizeof(double*));
 	 B_tmp = (double*)malloc(n * sizeof(double));
-
 	 for (int i = 0; i < n; i++) {
 		A_true[i] = (double*)malloc(n * sizeof(double));
 		for (int j = 0; j < n; j++) {
@@ -119,25 +113,39 @@ int main(int argc, char *argv[]) {
 	 for (int i = 0; i < n; i++) {
 		fscanf(file, "%lf", &B[i]);
 		B_tmp[i] = B[i];
-	 } printf("%d\n", n);
+	 } if(var_for_debug == 1 || print__matrix == 1)printf("\n\tdimension: %d\n\n", n);
 	 fclose(file);
 
-	 for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-		 printf("%*lf", 13, A[i * n + j]);
-		}
-		printf("%*lf\n", 13, B[i]);
-	 }printf("\n");
+	 if (var_for_debug == 1 || print__matrix == 1) {
+		for (int i = 0; i < n; i++) {
+		 for (int j = 0; j < n; j++) {
+			printf("%*lf", 13, A[i * n + j]);
+		 }
+		 printf("%*lf\n", 13, B[i]);
+		}printf("\n");
+	 }
 
+	 start = clock();
+	 lss_20_01(n, A, B, X, tmp);
+	 end = clock();
 
-	 printf("\n%d\n", lss_20_01(n, A, B, X, tmp));
+	 if (print__matrix == 1) {
+		for (int i = 0; i < n; i++) {
+		 for (int j = 0; j < n; j++) {
+			printf("%*lf", 13, A[i * n + j]);
+		 }
+		 printf("%*lf\n", 13, B[i]);
+		}printf("\n");
+	 }
+
+	 if (print__time == 1) { printf("\nexecution time: %lf\n", time_spent(start, end)); }
 
 	 file = fopen(path_out, "w");
 	 fprintf(file, "%d\n", n);
 	 for (int i = 0; i < n; i++) {
 		fprintf(file, "%1.9lf\n", X[i]);
-		printf("x_%d = %lf\n", i + 1, X[i]);
-	 }printf("\n");
+		 if(var_for_debug == 1) printf("x_%d = %lf\n", i + 1, X[i]);
+	 } if (var_for_debug == 1) printf("\n");
 
 
 	 for (int i = 0; i < n; i++) {
@@ -156,14 +164,10 @@ int main(int argc, char *argv[]) {
 		printf("%5.5lf=%5.5lf\n", abcd, B_tmp[i]);
 	 }
 
-
-
-
 	 free(A);
 	 free(B);
 	 free(X);
 	 free(tmp);
-
 
 	 fclose(file);
 	}

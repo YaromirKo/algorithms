@@ -8,14 +8,11 @@
    
 Метод решения может быть не применим к системе, например, в силу вырожденности матрицы системы для метода решения через построение LU разложения. */
 
-int var_for_debug;
-int var_for_errors;
 
 
 
 int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 
- int p = 0;
  int this_is_null = 0;
  int column;
  int swap_сolumns = 0;
@@ -24,6 +21,8 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
  double save_1;
 
  for (int i = 0; i < n; i++) {
+
+	if (var_for_debug == 1) { printf("\n\t%s %d\n", "Iteration number: ", i + 1); }
 
 	max = ELEM(A, n, i, i);
 
@@ -48,6 +47,7 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	else { this_is_null = 0; }
 
 	if (swap_сolumns == 1) {
+
 	 double change_column;
 	 change_column = tmp[i];
 	 tmp[i] = tmp[column];
@@ -59,16 +59,18 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 		ELEM(A, n, j, column) = change_column;
 	 }
 	 swap_сolumns = 0;
+
+	 if (var_for_debug == 1) {
+		printf("\tchanging columns\n\n");
+		for (int i = 0; i < n; i++) {
+		 for (int j = 0; j < n; j++) {
+			printf("%*lf", 13, ELEM(A, n, i, j));
+		 }
+		 printf("%*lf\n", 13, B[i]);
+		}printf("\n");
+	 }
 	}
-	if (1 == p) {
-	 printf("start change column\n");
-	 for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-		 printf("%*lf", 13, ELEM(A, n, i, j));
-		}
-		printf("%*lf\n", 13, B[i]);
-	 }printf("\n");
-	}
+
 	save_1 = ELEM(A, n, i, i);
 	B[i] = B[i] / ELEM(A, n, i, i);
 
@@ -85,8 +87,8 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	 }
 	 this_is_null = 0;
 	}
-	if (1 == p) {
-	 printf("algoritm\n");
+	if (var_for_debug == 1) {
+	 printf("\ttransform the inner part of the matrix\n\n");
 	 for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 		 printf("%*lf", 13, ELEM(A, n, i, j));
@@ -95,25 +97,15 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	 }printf("\n");
 	}
  }
- ////////////////////////////////////////////////////////////////////////////////////
- for (int i = 0; i < n; i++) {
-	for (int j = 0; j < n; j++) {
-	 printf("%*lf", 13, ELEM(A, n, i, j));
-	}
-	printf("%*lf\n", 13, B[i]);
- }printf("\n");
-
- double some_tmp;
 
  for (int i = n - 1; i > -1; i--) {
-	some_tmp = B[i];
+	save_1 = B[i];
 	int abc = tmp[i];
 	for (int j = n - 1; j > i; j--) {
-	 some_tmp -= ELEM(A, n, i, j) * X[(int)tmp[j]];
+	 save_1 -= ELEM(A, n, i, j) * X[(int)tmp[j]];
 	}
-	X[abc] = some_tmp;
+	X[abc] = save_1;
  }
-
 
  return 0;
 }
