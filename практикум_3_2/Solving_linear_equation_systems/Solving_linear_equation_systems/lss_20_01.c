@@ -8,9 +8,14 @@
    
 Метод решения может быть не применим к системе, например, в силу вырожденности матрицы системы для метода решения через построение LU разложения. */
 
+int var_for_debug;
+int var_for_errors;
+
+
+
 int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 
- int p = 1;
+ int p = 0;
  int this_is_null = 0;
  int column;
  int swap_сolumns = 0;
