@@ -20,7 +20,7 @@ size_t lss_memsize_20_01(int n) { return n * sizeof(double); }
 int check_str(char * first, char * last) {
 
  int i = 0;
- for (; first[i] != '\0' && last[i] != '\0'; i++) {
+ for (; first[i] != '\0' && last[i] != '\0' || first[2]; i++) {
 	if (first[i] != last[i]) { return 1; }
  }
  if (i < 2) { return 1; }
@@ -29,22 +29,8 @@ int check_str(char * first, char * last) {
 
 int check_name_txt(char * first) {
 
- int i = 0;
- int check_index = 0;
-	for (i; first[i] != '\0' && first[0] != '-'; i++) {
-	 if (first[i] == '.') {
-		check_index++;
-		if (check_index != 0) {
-		 if (first[i + 1] == 't' && first[i + 2] == 'x' && first[i + 3] == 't') {
-			check_index = 0;
-			return 0;
-		 }
-		 else {
-			check_index = 0;
-			i++;
-		 }
-		}
-	 }
+	for (int i = 0; first[i] != '\0' && first[0] != '-'; i++) {
+	 if (first[i] == '.' && first[i + 1] == 't' && first[i + 2] == 'x' && first[i + 3] == 't') { return 0; }
 	}
 	return 1;
 }
