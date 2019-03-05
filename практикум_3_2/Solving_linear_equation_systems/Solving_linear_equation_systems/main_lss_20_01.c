@@ -1,14 +1,13 @@
 ﻿#include "lss_20_01.h"
 
-#define ERROR_OPEN_FILE_IN 123
-#define ERROR_OPEN_FILE_OUT 4564
-#define ERROR_DIMENSION 456
-#define ERROR_DIMENSION_MATRIX_A 8
-#define ERROR_DIMENSION_MATRIX_B 46
-#define ERROR_INPUT 89
-#define PRINT_INFO 1
-#define ERROR_EMPTY 404
-
+#define ERROR_OPEN_FILE_IN 404
+#define ERROR_OPEN_FILE_OUT 406
+#define ERROR_DIMENSION 68
+#define ERROR_DIMENSION_MATRIX_A 65
+#define ERROR_DIMENSION_MATRIX_B 66
+#define ERROR_INPUT 400
+#define PRINT_INFO 200
+#define ERROR_EMPTY 500
 
 /*1. Программа должна состоять из двух модулей 
 		 - интерфейсного (обеспечивающего разбор командной строки, 
@@ -57,6 +56,7 @@ int errors(int code) {
 }
 
 int main(int argc, char *argv[]) {
+
 
 	FILE *file;
 	int n;
