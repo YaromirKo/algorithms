@@ -8,6 +8,16 @@
    
 Метод решения может быть не применим к системе, например, в силу вырожденности матрицы системы для метода решения через построение LU разложения. */
 
+void print_matrix_a_b(int n, double * A, double * B, char * string) {
+
+ printf("\t%s\n\n", string);
+ for (int i = 0; i < n; i++) {
+	for (int j = 0; j < n; j++) {
+	 printf("%*lf", 13, ELEM(A, n, i, j));
+	}
+	printf("%*lf\n", 13, B[i]);
+ }printf("\n");
+}
 
 int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 
@@ -58,15 +68,7 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	 }
 	 swap_сolumns = 0;
 
-	 if (var_for_debug == 1) {
-		printf("\tchanging columns\n\n");
-		for (int i = 0; i < n; i++) {
-		 for (int j = 0; j < n; j++) {
-			printf("%*lf", 13, ELEM(A, n, i, j));
-		 }
-		 printf("%*lf\n", 13, B[i]);
-		}printf("\n");
-	 }
+	 if (var_for_debug == 1) { print_matrix_a_b(n, A, B, "changing columns"); }
 	}
 
 	save_1 = ELEM(A, n, i, i);
@@ -85,15 +87,7 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	 }
 	 this_is_null = 0;
 	}
-	if (var_for_debug == 1) {
-	 printf("\ttransform the inner part of the matrix\n\n");
-	 for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-		 printf("%*lf", 13, ELEM(A, n, i, j));
-		}
-		printf("%*lf\n", 13, B[i]);
-	 }printf("\n");
-	}
+	if (var_for_debug == 1) { print_matrix_a_b(n, A, B, "transform the inner part of the matrix");	}
  }
 
  for (int i = n - 1; i > -1; i--) {

@@ -55,8 +55,18 @@ int errors(int code) {
  return code;
 }
 
-int main(int argc, char *argv[]) {
+void print_matrix_full(int n, double *  A, double * B) {
 
+ for (int i = 0; i < n; i++) {
+	for (int j = 0; j < n; j++) {
+	 printf("%*lf", 13, A[i * n + j]);
+	}
+	printf("%*lf\n", 13, B[i]);
+ }printf("\n");
+}
+
+
+int main(int argc, char *argv[]) {
 
 	FILE *file;
 	int n;
@@ -103,45 +113,24 @@ int main(int argc, char *argv[]) {
 	tmp = (double*)malloc(lss_memsize_20_01(n));
 	for (int i = 0; i < n; i++) { tmp[i] = i; }
 
-	///double **A_true;
-	///double *B_tmp;
-	///A_true = (double**)malloc(n * sizeof(double*));
-	///B_tmp = (double*)malloc(n * sizeof(double));
 	for (int i = 0; i < n; i++) {
-	 ///A_true[i] = (double*)malloc(n * sizeof(double));
 	 for (int j = 0; j < n; j++) {
 		if (fscanf(file, "%lf", &A[i * n + j]) == EOF) { return errors(ERROR_DIMENSION_MATRIX_A); }
-		///A_true[i][j] = A[i * n + j];
 	 }
 	}
 
 	for (int i = 0; i < n; i++) {
 	 if (fscanf(file, "%lf", &B[i]) == EOF) { return errors(ERROR_DIMENSION_MATRIX_B); }
-	 ///B_tmp[i] = B[i];
 	} if(var_for_debug == 1 || print__matrix == 1)printf("\n\tdimension: %d\n\n", n);
 	fclose(file);
 
-	if (var_for_debug == 1 || print__matrix == 1) {
-	 for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-		 printf("%*lf", 13, A[i * n + j]);
-		}
-		printf("%*lf\n", 13, B[i]);
-	 }printf("\n");
-	}
+	if (var_for_debug == 1 || print__matrix == 1) { print_matrix_full(n, A, B); }
 
 	start = clock();
 	int answer_code = lss_20_01(n, A, B, X, tmp);
 	end = clock();
 
-	if (print__matrix == 1 && var_for_debug != 1) {
-	 for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-		 printf("%*lf", 13, A[i * n + j]);
-		}
-		printf("%*lf\n", 13, B[i]);
-	 }printf("\n");
-	}
+	if (print__matrix == 1 && var_for_debug != 1) { print_matrix_full(n, A, B); }
 
 	if (print__time == 1) { printf("\nexecution time: %lf\n\n", time_spent(start, end)); }
 
@@ -161,24 +150,6 @@ int main(int argc, char *argv[]) {
 	 if (var_for_debug == 1) printf("result: %d\n", 0);
 	}
 	
-
-
-	/*for (int i = 0; i < n; i++) {
-	 double abcd = 0;
-	 for (int j = 0; j < n; j++) {
-		abcd += A_true[i][j] * X[j];
-	 }
-	 printf("%5.9lf\n", fabs(abcd) - fabs(B_tmp[i]));
-	}printf("\n");*/
-
-	/*for (int i = 0; i < n; i++) {
-	 double abcd = 0;
-	 for (int j = 0; j < n; j++) {
-		abcd += A_true[i][j] * X[j];
-	 }
-	 printf("%5.5lf=%5.5lf\n", abcd, B_tmp[i]);
-	}*/
-
 	free(A);
 	free(B);
 	free(X);
@@ -186,6 +157,5 @@ int main(int argc, char *argv[]) {
 
 	fclose(file);
 	
-	//system("pause");
 	return 0;
 }
