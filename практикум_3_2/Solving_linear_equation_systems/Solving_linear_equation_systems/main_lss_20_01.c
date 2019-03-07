@@ -55,7 +55,7 @@ int errors(int code) {
  return code;
 }
 
-void print_matrix_full(int n, double *  A, double * B) {
+void print_matrix(int n, double *  A, double * B) {
 
  for (int i = 0; i < n; i++) {
 	for (int j = 0; j < n; j++) {
@@ -124,13 +124,13 @@ int main(int argc, char *argv[]) {
 	} if(var_for_debug == 1 || print__matrix == 1)printf("\n\tdimension: %d\n\n", n);
 	fclose(file);
 
-	if (var_for_debug == 1 || print__matrix == 1) { print_matrix_full(n, A, B); }
+	if (var_for_debug == 1 || print__matrix == 1) { print_matrix(n, A, B); }
 
 	start = clock();
 	int answer_code = lss_20_01(n, A, B, X, tmp);
 	end = clock();
 
-	if (print__matrix == 1 && var_for_debug != 1) { print_matrix_full(n, A, B); }
+	if (print__matrix == 1 && var_for_debug != 1) { print_matrix(n, A, B); }
 
 	if (print__time == 1) { printf("\nexecution time: %lf\n\n", time_spent(start, end)); }
 
