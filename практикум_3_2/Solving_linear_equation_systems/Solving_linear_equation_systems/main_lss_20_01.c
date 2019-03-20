@@ -46,7 +46,7 @@ int errors(int code) {
   case ERROR_INPUT: printf("\ninput error, enter for '-h' or '-?', to specify the input\n"); break;
 	case ERROR_OPEN_FILE_IN: if (var_for_errors == 1) { printf("\nERROR_OPEN_FILE_IN\n"); } break;
 	case ERROR_EMPTY: if (var_for_errors == 1) { printf("\nInput file is empty\n"); } break;
-	case ERROR_DIMENSION: if (var_for_errors == 1) { printf("\ndimension less than 2\n"); } break;
+	case ERROR_DIMENSION: if (var_for_errors == 1) { printf("\ndimension less than 1\n"); } break;
 	case ERROR_DIMENSION_MATRIX_A: if (var_for_errors == 1) { printf("\nERROR_DIMENSION_MATRIX_A\n"); } break;
 	case ERROR_DIMENSION_MATRIX_B: if (var_for_errors == 1) { printf("\nERROR_DIMENSION_MATRIX_B\n"); } break;
 	case ERROR_OPEN_FILE_OUT: if (var_for_errors == 1) { printf("\nERROR_OPEN_FILE_OUT\n"); } break;
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
 
 	for (int i = 1; i < argc; i++) {
 
-	 if ((argc > 1 || argc > 2) && check_name_txt(argv[i]) == 0) { 
+	 if (check_name_txt(argv[i]) == 0) { 
 		if (i == 1) { path_in = argv[1]; }
 		if (i == 2) { path_out = argv[2]; }
 	 }
@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 	
 	if (check_not_a_char == EOF || check_not_a_char < 1 ) { return errors(ERROR_EMPTY); }
 
-	if (n < 2) { return errors(ERROR_DIMENSION); }
+	if (n < 1) { return errors(ERROR_DIMENSION); }
 
 	A = (double*)malloc(n * n * sizeof(double));
 	B = (double*)malloc(n * sizeof(double));
@@ -121,7 +121,9 @@ int main(int argc, char *argv[]) {
 
 	for (int i = 0; i < n; i++) {
 	 if (fscanf(file, "%lf", &B[i]) == EOF) { return errors(ERROR_DIMENSION_MATRIX_B); }
-	} if(var_for_debug == 1 || print__matrix == 1)printf("\n\tdimension: %d\n\n", n);
+	} 
+
+	if(var_for_debug == 1 || print__matrix == 1) printf("\n\tdimension: %d\n\n", n);
 	fclose(file);
 
 	if (var_for_debug == 1 || print__matrix == 1) { print_matrix(n, A, B); }
