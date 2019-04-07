@@ -1,0 +1,2 @@
+all:
+	gcc -x c -O3 main_lss_20_01.c lss_20_01.c lss_20_01.h -o lss -lm
