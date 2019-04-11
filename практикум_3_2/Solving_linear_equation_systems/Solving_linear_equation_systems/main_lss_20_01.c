@@ -34,7 +34,7 @@ int check_name_txt(char * first) {
 	return 1;
 }
 
-void print_help() { printf("\nUsage: lss [input_file_name] [output_file_name] [options]\nWhere options include :\n -d    print debug messages[default OFF]\n -e    print errors[default OFF]\n -p    print matrix[default OFF]\n -t    print execution time[default OFF]\n -h, -? print this and exit\nDefault input_file_name value is lss_00_00_in.txt, default output_file_name value is lss_00_00_out.txt.\n");}
+void print_help() { printf("\nUsage: lss [input_file_name] [output_file_name] [options]\nWhere options include :\n -d    print debug messages[default OFF]\n -e    print errors[default OFF]\n -p    print matrix[default OFF]\n -t    print execution time[default OFF]\n -h, -? print this and exit\nDefault input_file_name value is lss_20_01_in.txt, default output_file_name value is lss_20_01_out.txt.\n");}
 
 double time_spent(clock_t start, clock_t end) { return (double)(end - start) / CLOCKS_PER_SEC; }
 
