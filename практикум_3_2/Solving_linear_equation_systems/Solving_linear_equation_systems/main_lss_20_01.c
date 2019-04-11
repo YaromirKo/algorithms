@@ -9,36 +9,30 @@
 #define PRINT_INFO 200
 #define ERROR_EMPTY 500
 
-/*1. Программа должна состоять из двух модулей 
-		 - интерфейсного (обеспечивающего разбор командной строки,
-											файловый ввод - вывод, выделение памяти, обработку ошибок и т.д.) 
-		и вычислительного (обеспечивающего непосредственное решение задачи).*/
-
+/* определение размера массива дополнительной памяти */
 size_t lss_memsize_20_01(int n) { return n * sizeof(double); }
 
-int check_str(char * first, char * last) {
+/* сравнение строк */
+int check_str(char * first, char * second) {
 
- int i = 0;
- for (; first[i] != '\0' && last[i] != '\0' || first[2]; i++) {
-	if (first[i] != last[i]) { return 1; }
+ for (int i = 0; first[i] != '\0' || second[i] != '\0'; i++) {
+	if (first[i] != second[i]) { return 1; }
  }
- if (i < 2) { return 1; }
- else { return 0; }
+ return 0;
 }
 
-int check_name_txt(char * first) {
+/* функция для проверка: содержится ли в названии файлов (ввода/ввывода) ".txt" */
+int check_name_txt(char * name) {
 
-	for (int i = 0; first[i] != '\0' && first[0] != '-'; i++) {
-	 if (first[i] == '.' && first[i + 1] == 't' && first[i + 2] == 'x' && first[i + 3] == 't') { return 0; }
+	for (int i = 0; name[0] != '-' && name[i] != '\0'; i++) {
+	 if (name[i] == '.' && name[i + 1] == 't' && name[i + 2] == 'x' && name[i + 3] == 't') { return 0; }
 	}
 	return 1;
 }
-
+/* печать образца синтаксиса входных параметров */
 void print_help() { printf("\nUsage: lss [input_file_name] [output_file_name] [options]\nWhere options include :\n -d    print debug messages[default OFF]\n -e    print errors[default OFF]\n -p    print matrix[default OFF]\n -t    print execution time[default OFF]\n -h, -? print this and exit\nDefault input_file_name value is lss_20_01_in.txt, default output_file_name value is lss_20_01_out.txt.\n");}
 
-double time_spent(clock_t start, clock_t end) { return (double)(end - start) / CLOCKS_PER_SEC; }
-
-
+/* печать информации по соответвующему коду ошибки */
 int errors(int code) {
 
  switch (code) {
@@ -55,6 +49,7 @@ int errors(int code) {
  return code;
 }
 
+/* печать матрицы A и B */
 void print_matrix(int n, double *  A, double * B) {
 
  for (int i = 0; i < n; i++) {
@@ -69,24 +64,26 @@ void print_matrix(int n, double *  A, double * B) {
 int main(int argc, char *argv[]) {
 
 	FILE *file;
-	int n;
 
-	double *A;
-	double *B;
-	double *X;
-	double *tmp;
+	int n;       // число уравнений в системе (число неизвестных всегда считаем равным числу уравнений)
+
+	double *A;   // массив матрицы А
+	double *B;   // массив матрицы B
+	double *X;   // массив значений иксов (вектор ответ) 
+	double *tmp; // массив дополнительной памяти для вычислений по Методу Гаусса с выбором главного элемента по строке
 
 	clock_t start, end;
 
-	int print__time = 0;
-	int print__matrix = 0;
+	int print__time = 0;   // флаг для печати времени работы алгоритма
+	int print__matrix = 0; // флаг для печати входных матриц и матриц после всех преобразований
 
-	char * path_in = "lss_20_01_in.txt";
-	char * path_out = "lss_20_01_out.txt";
+	char * path_in = "lss_20_01_in.txt";	 // дефолтное имя файла для входных значений
+	char * path_out = "lss_20_01_out.txt"; // дефолтное имя файла для выходных значений
 
+	/* проверка входных параметров с консоли */
 	for (int i = 1; i < argc; i++) {
 
-	 if (check_name_txt(argv[i]) == 0) { 
+	 if (check_name_txt(argv[i]) == 0 && (i == 1 || i == 2)) { 
 		if (i == 1) { path_in = argv[1]; }
 		if (i == 2) { path_out = argv[2]; }
 	 }
@@ -98,74 +95,85 @@ int main(int argc, char *argv[]) {
 	 else { return errors(ERROR_INPUT); }
 	}
 
-
+	/* открытие файла с входными значениями */
 	if ((file = fopen(path_in, "r")) == NULL) { 
 	 return errors(ERROR_OPEN_FILE_IN); 
 	}
 
-	int check_not_a_char = fscanf(file, "%d", &n);
-	
-	if (check_not_a_char == EOF || check_not_a_char < 1 ) { 
-	 return errors(ERROR_EMPTY); 
+	/* считываение первой строки файла */
+	if (fscanf(file, "%d", &n) == EOF) {
+	 return errors(ERROR_EMPTY); // если файл пустой возвращаем ошибку ERROR_EMPTY
 	}
 
+	/* если число уравнений в системе (число неизвестных всегда считаем равным числу уравнений) меньше 1, возвращаем ошибку ERROR_DIMENSION */
 	if (n < 1) { 
 	 return errors(ERROR_DIMENSION);
 	}
 
+	/* выделение памяти под массивы */
 	A = (double*)malloc(n * n * sizeof(double));
 	B = (double*)malloc(n * sizeof(double));
 	X = (double*)malloc(n * sizeof(double));
 	tmp = (double*)malloc(lss_memsize_20_01(n));
+
+	/* заполнение массива дополнительной памяти */
 	for (int i = 0; i < n; i++) { tmp[i] = i; }
 
+	/* считывание матрицы A с файла */
 	for (int i = 0; i < n; i++) {
 	 for (int j = 0; j < n; j++) {
 		if (fscanf(file, "%lf", &A[i * n + j]) == EOF) { 
-		 return errors(ERROR_DIMENSION_MATRIX_A); 
+		 return errors(ERROR_DIMENSION_MATRIX_A); // если элементов мьньше чем n*n, то выводим ошибку ERROR_DIMENSION_MATRIX_A
 		}
 	 }
 	}
 
+	/* считывание матрицы B с файла */
 	for (int i = 0; i < n; i++) {
 	 if (fscanf(file, "%lf", &B[i]) == EOF) { 
-		return errors(ERROR_DIMENSION_MATRIX_B); 
+		return errors(ERROR_DIMENSION_MATRIX_B); // если элементов мьньше чем n, то выводим ошибку ERROR_DIMENSION_MATRIX_A
 	 }
-	} 
+	}
 
+	/* вывод значения n */
 	if (var_for_debug == 1 || print__matrix == 1) {
 	 printf("\n\tdimension: %d\n\n", n);
 	}
 	fclose(file);
 
+	/* вызов функции печати матриц */
 	if (var_for_debug == 1 || print__matrix == 1) { 
 	 print_matrix(n, A, B);
 	}
 
-	start = clock();
-	int answer_code = lss_20_01(n, A, B, X, tmp);
-	end = clock();
+	start = clock(); // начало работы подпрограммы
+	int answer_code = lss_20_01(n, A, B, X, tmp); // вызов функции подпрограммы
+	end = clock();   // конец работы подпрограммы
 
+	/* печать матриц после преобразований подпрограммы */
 	if (print__matrix == 1 && var_for_debug != 1) { 
 	 print_matrix(n, A, B);
 	}
 
+	/* печать времени работы подпрограммы */
 	if (print__time == 1) { 
-	 printf("\nexecution time: %lf\n\n", time_spent(start, end));
+	 printf("\nexecution time: %lf\n\n", (double)(end - start) / CLOCKS_PER_SEC);
 	}
 
+	/* открытие файла на запись ответа */
 	file = fopen(path_out, "w");
 
-	if (file == NULL) { 
+	if (file == NULL) {
 	 return errors(ERROR_OPEN_FILE_OUT);
 	}
 
+	/* записываем в файл результат */
 	if (answer_code == 0) {
 	 fprintf(file, "%d\n", n);
 	 for (int i = 0; i < n; i++) {
 		fprintf(file, "%1.9lf\n", X[i]);
 		if (var_for_debug == 1 || print__matrix == 1) {
-		 printf("\tx_%d = %lf\n", i + 1, X[i]);
+		 printf("\tx_%d = %lf\n", i + 1, X[i]); // печать ответа в консоль
 		}
 	 } if (var_for_debug == 1 || print__matrix == 1) {
 		printf("\n");
