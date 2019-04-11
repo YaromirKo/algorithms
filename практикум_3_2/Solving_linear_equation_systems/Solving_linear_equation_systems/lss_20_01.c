@@ -28,7 +28,7 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	max = ELEM(A, n, i, i);
 
 	for (int j = i; j < n; j++) {
-	 if (fabs(ELEM(A, n, i, j)) <= 1e-6) {
+	 if (fabs(ELEM(A, n, i, j)) <= 1e-9) {
 		this_is_null++;
 	 }
 	 if (fabs(max) < fabs(ELEM(A, n, i, j))) {
@@ -38,7 +38,7 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	 }
 	}
 	if (n - i == this_is_null) {
-	 if (fabs(B[i]) <= 1e-6) {
+	 if (fabs(B[i]) <= 1e-9) {
 		X[(int)tmp[i]] = 0;
 		this_is_null = 0;
 		continue;

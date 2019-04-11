@@ -10,7 +10,7 @@
 #define ERROR_EMPTY 500
 
 /*1. Программа должна состоять из двух модулей 
-		 - интерфейсного (обеспечивающего разбор командной строки, 
+		 - интерфейсного (обеспечивающего разбор командной строки,
 											файловый ввод - вывод, выделение памяти, обработку ошибок и т.д.) 
 		и вычислительного (обеспечивающего непосредственное решение задачи).*/
 
@@ -99,13 +99,19 @@ int main(int argc, char *argv[]) {
 	}
 
 
-	if ((file = fopen(path_in, "r")) == NULL) { return errors(ERROR_OPEN_FILE_IN); }
+	if ((file = fopen(path_in, "r")) == NULL) { 
+	 return errors(ERROR_OPEN_FILE_IN); 
+	}
 
 	int check_not_a_char = fscanf(file, "%d", &n);
 	
-	if (check_not_a_char == EOF || check_not_a_char < 1 ) { return errors(ERROR_EMPTY); }
+	if (check_not_a_char == EOF || check_not_a_char < 1 ) { 
+	 return errors(ERROR_EMPTY); 
+	}
 
-	if (n < 1) { return errors(ERROR_DIMENSION); }
+	if (n < 1) { 
+	 return errors(ERROR_DIMENSION);
+	}
 
 	A = (double*)malloc(n * n * sizeof(double));
 	B = (double*)malloc(n * sizeof(double));
@@ -115,49 +121,70 @@ int main(int argc, char *argv[]) {
 
 	for (int i = 0; i < n; i++) {
 	 for (int j = 0; j < n; j++) {
-		if (fscanf(file, "%lf", &A[i * n + j]) == EOF) { return errors(ERROR_DIMENSION_MATRIX_A); }
+		if (fscanf(file, "%lf", &A[i * n + j]) == EOF) { 
+		 return errors(ERROR_DIMENSION_MATRIX_A); 
+		}
 	 }
 	}
 
 	for (int i = 0; i < n; i++) {
-	 if (fscanf(file, "%lf", &B[i]) == EOF) { return errors(ERROR_DIMENSION_MATRIX_B); }
+	 if (fscanf(file, "%lf", &B[i]) == EOF) { 
+		return errors(ERROR_DIMENSION_MATRIX_B); 
+	 }
 	} 
 
-	if(var_for_debug == 1 || print__matrix == 1) printf("\n\tdimension: %d\n\n", n);
+	if (var_for_debug == 1 || print__matrix == 1) {
+	 printf("\n\tdimension: %d\n\n", n);
+	}
 	fclose(file);
 
-	if (var_for_debug == 1 || print__matrix == 1) { print_matrix(n, A, B); }
+	if (var_for_debug == 1 || print__matrix == 1) { 
+	 print_matrix(n, A, B);
+	}
 
 	start = clock();
 	int answer_code = lss_20_01(n, A, B, X, tmp);
 	end = clock();
 
-	if (print__matrix == 1 && var_for_debug != 1) { print_matrix(n, A, B); }
+	if (print__matrix == 1 && var_for_debug != 1) { 
+	 print_matrix(n, A, B);
+	}
 
-	if (print__time == 1) { printf("\nexecution time: %lf\n\n", time_spent(start, end)); }
+	if (print__time == 1) { 
+	 printf("\nexecution time: %lf\n\n", time_spent(start, end));
+	}
 
 	file = fopen(path_out, "w");
 
-	if (file == NULL) { return errors(ERROR_OPEN_FILE_OUT); }
+	if (file == NULL) { 
+	 return errors(ERROR_OPEN_FILE_OUT);
+	}
 
 	if (answer_code == 0) {
 	 fprintf(file, "%d\n", n);
 	 for (int i = 0; i < n; i++) {
 		fprintf(file, "%1.9lf\n", X[i]);
-		if (var_for_debug == 1) printf("\tx_%d = %lf\n", i + 1, X[i]);
-	 } if (var_for_debug == 1) printf("\n");
+		if (var_for_debug == 1 || print__matrix == 1) {
+		 printf("\tx_%d = %lf\n", i + 1, X[i]);
+		}
+	 } if (var_for_debug == 1 || print__matrix == 1) {
+		printf("\n");
+	 }
 	}
 	else {
 	 fprintf(file, "%d\n", 0);
-	 if (var_for_debug == 1) printf("result: %d\n", 0);
+	 printf("no solutions");
+	 if (var_for_debug == 1 || print__matrix == 1) {
+		printf("result: %d\n", 0);
+	 }
 	}
-	
+
+	fclose(file);
+
 	free(A);
 	free(B);
 	free(X);
 	free(tmp);
 
-	fclose(file);
-	
 	return 0;
 }
