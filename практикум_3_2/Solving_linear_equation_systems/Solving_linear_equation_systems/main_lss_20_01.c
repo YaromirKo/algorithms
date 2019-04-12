@@ -15,7 +15,7 @@ size_t lss_memsize_20_01(int n) { return n * sizeof(double); }
 /* сравнение строк */
 int check_str(char * first, char * second) {
 
- for (int i = 0; first[i] != '\0' || second[i] != '\0'; i++) {
+ for (int i = 0; first[i] || second[i]; i++) {
 	if (first[i] != second[i]) { return 1; }
  }
  return 0;
@@ -134,13 +134,13 @@ int main(int argc, char *argv[]) {
 		return errors(ERROR_DIMENSION_MATRIX_B); // если элементов мьньше чем n, то выводим ошибку ERROR_DIMENSION_MATRIX_A
 	 }
 	}
+	fclose(file);
 
 	/* вывод значения n */
 	if (var_for_debug == 1 || print__matrix == 1) {
 	 printf("\n\tdimension: %d\n\n", n);
 	}
-	fclose(file);
-
+	
 	/* вызов функции печати матриц */
 	if (var_for_debug == 1 || print__matrix == 1) { 
 	 print_matrix(n, A, B);
@@ -161,9 +161,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	/* открытие файла на запись ответа */
-	file = fopen(path_out, "w");
-
-	if (file == NULL) {
+	if ((file = fopen(path_out, "w")) == NULL) {
 	 return errors(ERROR_OPEN_FILE_OUT);
 	}
 
@@ -180,10 +178,10 @@ int main(int argc, char *argv[]) {
 	 }
 	}
 	else {
-	 fprintf(file, "%d\n", 0);
-	 printf("no solutions");
+	 fprintf(file, "%d\n", 0); // если решения системы не существует и выходной файл будет содержать одну единственную цифру '0'
 	 if (var_for_debug == 1 || print__matrix == 1) {
-		printf("result: %d\n", 0);
+		printf("no solutions");
+		// printf("result: %d\n", 0);
 	 }
 	}
 
