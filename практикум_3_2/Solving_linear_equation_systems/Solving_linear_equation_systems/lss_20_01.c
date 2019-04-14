@@ -1,5 +1,6 @@
 ﻿#include "lss_20_01.h"
-#define ELEM(Matrix,RowLen,row,col) (Matrix + RowLen * row)[col]
+/// Метод Гаусса с выбором главного элемента по строке.
+#define ELEM(matrix, len, row, col) (matrix + len * row)[col]
 
 /* печать матриц A и B с заголовком */
 void print_matrix_a_b(int n, double * A, double * B, char * string) {
@@ -21,18 +22,17 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
  int swap_сolumns = 0; // флаг для перестановки колонок
  
  double max; // максимальное по модулю значение элемента в i-ой строке матрицы А
- double save_1;
+ double save_1; // вспомогательная переменная
 
+
+ /* Прямой ход. Исходная система сводится к эквивалентной системе с верхней треугольной матрицей */
  for (int i = 0; i < n; i++) {
-
-	/* печать номера итерации, если была указана опция '-d' */
-	if (var_for_debug == 1) { printf("\n\t%s %d\n", "Iteration number: ", i + 1); }
 
 	max = ELEM(A, n, i, i); 
 
 	/* поиск максимального по модулю значения элемента в i-ой строке матрицы А */
 	for (int j = i; j < n; j++) {
-	 if (fabs(ELEM(A, n, i, j)) <= 1e-9) { // подсчет нулей для
+	 if (fabs(ELEM(A, n, i, j)) <= 1e-9) { // подсчет нулей в строке i
 		count_null++;
 	 }
 	 if (fabs(max) < fabs(ELEM(A, n, i, j))) {
@@ -53,7 +53,10 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	}
 	else { count_null = 0; }
 
-	/* перестановка колонок в матрице A */
+	/* печать номера итерации, если была указана опция '-d' */
+	if (var_for_debug == 1) { printf("\n\t%s %d\n", "Iteration number: ", i + 1); }
+
+	/* перестановка значений колонок в матрице A и сохраняем индексы иксов */
 	if (swap_сolumns == 1) {
 
 	 double change_column;
@@ -71,15 +74,16 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	 if (var_for_debug == 1) { print_matrix_a_b(n, A, B, "changing columns"); }
 	}
 
-	save_1 = ELEM(A, n, i, i);
-	B[i] = B[i] / ELEM(A, n, i, i);
+	save_1 = ELEM(A, n, i, i); // ведущий элемент
+	B[i] = B[i] / ELEM(A, n, i, i); // делим i элемент матрицы B на ведущий элемент
 
 	for (int j = i; j < n; j++) {
-	 ELEM(A, n, i, j) = ELEM(A, n, i, j) / save_1;
+	 ELEM(A, n, i, j) = ELEM(A, n, i, j) / save_1; // делим элементы строки на ведущий элемент
 	}
 
+	/* зануляем столбцы под соответствующими ведущими элементами, преобразовываем внутреннюю часть матрицы A, B (после строки с ведущим элементом) */
 	for (int j = i + 1; j < n; j++) {
-	 save_1 = ELEM(A, n, j, i);
+	 save_1 = ELEM(A, n, j, i); 
 	 B[j] = B[j] - B[i] * ELEM(A, n, j, i);
 
 	 for (int k = i; k < n; k++) {
@@ -90,6 +94,7 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	if (var_for_debug == 1) { print_matrix_a_b(n, A, B, "transform the inner part of the matrix");	}
  }
 
+ /* обратный ход. Находим иксы */
  for (int i = n - 1; i > -1; i--) {
 	save_1 = B[i];
 	int abc = tmp[i];
@@ -99,5 +104,5 @@ int lss_20_01(int n, double * A, double * B, double * X, double * tmp) {
 	X[abc] = save_1;
  }
 
- return 0;
+ return 0; // если решение найдено возвращаем '0'
 }

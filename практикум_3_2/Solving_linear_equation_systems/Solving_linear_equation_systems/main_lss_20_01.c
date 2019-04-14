@@ -1,5 +1,5 @@
 ﻿#include "lss_20_01.h"
-
+/// Метод Гаусса с выбором главного элемента по строке.
 #define ERROR_OPEN_FILE_IN 404
 #define ERROR_OPEN_FILE_OUT 406
 #define ERROR_DIMENSION 68
