@@ -1,4 +1,5 @@
-//
-// Created by Ronanndex on 9/30/2019.
-//
+#include "task_11_01.h"
 
+int main() {
+    return 0;
+}
