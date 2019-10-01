@@ -6,19 +6,25 @@
 
 Параметры алгоритма и интерфейсные параметры передаваются через параметры командной строки. Образец синтаксиса:
 
-/home/ivk/lss/lss
-Usage: lss [input_file_name] [output_file_name] [options]
+/home/ivk/evc$ ./evc -?
+Usage: evc [input_file_name] [output_file_name] [options]
 Where options include:
-  -d    print debug messages [default OFF]
-  -e    print errors [default OFF]
-  -p    print matrix [default OFF]
-  -t    print execution time [default OFF]
-  -h, -?     print this and exit
-Default input_file_name value is lss_20_01_in.txt, default output_file_name value is lss_20_01_out.txt.
+ -d                print debug messages [default OFF]
+ -e                print errors [default OFF]
+ -p                print matrix [default OFF]
+ -t                print execution time [default OFF]
+ -prec=<num>       precision [default - 1e-14]
+ -eps=<num>        epsilon [default - 1e-10]
+ -max_iter=<num>   limit number of iterations [default - 0, i.e. not limit]
+ -h, -?            print this and exit
+Default input_file_name value is 11_01_in.txt, default output_file_name value is 11_01_out.txt.
 
-Здесь первая строчка - расположение бинарника программы (первое строковое поле аргументов функции main). Пример вызова программы:
+Здесь первая строчка - расположение бинарника программы (первое строковое поле аргументов функции main);
+                       precision определяет, числа меньше какого считать нулем;
+                       epsilon - точность;
+                       max_iter - ограничение на число итераций алгоритма (если оно нулевое или отрицательное - ограничений нет).
 
-./lss input.txt output.txt -e -t
+Пример вызова программы: ./evc input.txt output.txt -e -t -eps=1e-6 -max_iter=10000
 
 
 Формат входного файла:

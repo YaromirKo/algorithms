@@ -1,3 +1,4 @@
+// интерфейс
 #include "task_11_01.h"
 /// LR с отражениями
 #define ERROR_OPEN_FILE_IN 404
@@ -9,7 +10,8 @@
 #define PRINT_INFO 200
 #define ERROR_EMPTY 500
 #define SUCCESS 0
-
+int var_for_debug = 0;
+int var_for_errors = 0;
 /* определение размера массива дополнительной памяти */
 size_t lss_memsize_20_01(int n) { return n * sizeof(double); }
 
@@ -31,7 +33,18 @@ int check_name_txt(char * name) {
     return 1;
 }
 /* печать образца синтаксиса входных параметров */
-void print_help() { printf("\nUsage: lss [input_file_name] [output_file_name] [options]\nWhere options include :\n -d    print debug messages[default OFF]\n -e    print errors[default OFF]\n -p    print matrix[default OFF]\n -t    print execution time[default OFF]\n -h, -? print this and exit\nDefault input_file_name value is lss_20_01_in.txt, default output_file_name value is lss_20_01_out.txt.\n");}
+void print_help() {
+    printf("\nUsage: evc [input_file_name] [output_file_name] [options]\n"
+           "Where options include:\n"
+           " -d                print debug messages [default OFF]\n"
+           " -e                print errors [default OFF]\n"
+           " -p                print matrix [default OFF]\n"
+           " -t                print execution time [default OFF]\n"
+           " -prec=<num>       precision [default - 1e-14]\n"
+           " -eps=<num>        epsilon [default - 1e-10]\n"
+           " -max_iter=<num>   limit number of iterations [default - 0, i.e. not limit]\n"
+           " -h, -?            print this and exit\n");
+}
 
 /* печать информации по соответвующему коду ошибки */
 int errors(int code) {
@@ -78,8 +91,8 @@ int main(int argc, char *argv[]) {
     int print__time = 0;   // флаг для печати времени работы алгоритма
     int print__matrix = 0; // флаг для печати входных матриц и матриц после всех преобразований
 
-    char * path_in = "lss_20_01_in.txt";	 // дефолтное имя файла для входных значений
-    char * path_out = "lss_20_01_out.txt"; // дефолтное имя файла для выходных значений
+    char * path_in = "11_01_in.txt";	 // дефолтное имя файла для входных значений
+    char * path_out = "11_01_out.txt"; // дефолтное имя файла для выходных значений
 
     /* проверка входных параметров с консоли */
     for (int i = 1; i < argc; i++) {
@@ -148,7 +161,7 @@ int main(int argc, char *argv[]) {
     }
 
     start = clock(); // начало работы подпрограммы
-    int answer_code = lss_20_01(n, A, B, X, tmp); // вызов функции подпрограммы
+    int answer_code; ///= lss_20_01(n, A, B, X, tmp); // вызов функции подпрограммы
     end = clock();   // конец работы подпрограммы
 
     /* печать матриц после преобразований подпрограммы */
