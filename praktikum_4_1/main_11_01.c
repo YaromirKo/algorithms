@@ -16,9 +16,9 @@ int var_for_errors = 0;
 size_t lss_memsize_20_01(int n) { return n * sizeof(double); }
 
 /* сравнение строк */
-int check_str(char * first, char * second) {
+int check_str(char * first, char * second, int lim) {
 
-    for (int i = 0; first[i] || second[i]; i++) {
+    for (int i = 0; (lim == 0 && (first[i] || second[i])) || (lim > 0 && i < lim); i++) {
         if (first[i] != second[i]) { return 1; }
     }
     return 0;
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
 
     double precision = 1e-14; // определяет, числа меньше какого считать нулем
     double epsilon = 1e-10; // точность
-    double max_iter = 0; //  ограничение на число итераций алгоритма (если оно нулевое или отрицательное - ограничений нет)
+    int max_iter = 0; //  ограничение на число итераций алгоритма (если оно нулевое или отрицательное - ограничений нет)
 
     int n;       // число уравнений в системе (число неизвестных всегда считаем равным числу уравнений)
 
@@ -105,13 +105,20 @@ int main(int argc, char *argv[]) {
             if (i == 1) { path_in = argv[1]; }
             if (i == 2) { path_out = argv[2]; }
         }
-        else if (check_str(argv[i], "-h") == 0 || check_str(argv[i], "-?") == 0) { return errors(PRINT_INFO); }
-        else if (check_str(argv[i], "-d") == 0) { var_for_debug = 1; }
-        else if (check_str(argv[i], "-e") == 0) { var_for_errors = 1; }
-        else if (check_str(argv[i], "-p") == 0) { print__matrix = 1; }
-        else if (check_str(argv[i], "-t") == 0) { print__time = 1; }
+        else if (check_str(argv[i], "-h", 0) == 0 || check_str(argv[i], "-?", 0) == 0) { return errors(PRINT_INFO); }
+        else if (check_str(argv[i], "-d", 0) == 0) { var_for_debug = 1; }
+        else if (check_str(argv[i], "-e", 0) == 0) { var_for_errors = 1; }
+        else if (check_str(argv[i], "-p", 0) == 0) { print__matrix = 1; }
+        else if (check_str(argv[i], "-t", 0) == 0) { print__time = 1; }
+
+        else if (check_str(argv[i], "-prec=",      6) == 0) { precision = atof(&argv[i][6]); }
+        else if (check_str(argv[i], "-eps=",       5) == 0) { epsilon = atof(&argv[i][5]); }
+        else if (check_str(argv[i], "-max_iter=", 10) == 0) { max_iter = (int)atof(&argv[i][10]); }
+
         else { return errors(ERROR_INPUT); }
     }
+
+    printf("%lf %lf %d\n", precision, epsilon, max_iter);
 
     /* открытие файла с входными значениями */
     if ((file = fopen(path_in, "r")) == NULL) {
