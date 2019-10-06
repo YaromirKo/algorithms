@@ -14,7 +14,8 @@ void print_m(int n, double * A) {
 int sim_11_01(int n, double * A, double * tmp, double precision) {
 
     double s_k;
-    double norm_a_j;
+    double norm_a_k;
+    double norm_x_k;
     double * x_k;
 
     for (int k = 0; k < n - 1; ++k) {
@@ -26,10 +27,15 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
             s_k += pow(ELEM(A, n, j, k), 2);
             x_k[j] = ELEM(A, n, j, k);
         }
-        norm_a_j = sqrt(pow(ELEM(A, n, k, (k - 1)), 2) + s_k);
-        x_k[k] -= norm_a_j;
-
         
+        norm_a_k = sqrt(pow(ELEM(A, n, k, (k - 1)), 2) + s_k);
+        x_k[k + 1] -= norm_a_k;
+
+        for (int j = k + 1; j < n; ++j) {
+            norm_x_k += pow(ELEM(A, n, j, k), 2);
+        }
+
+
 
     }
 
