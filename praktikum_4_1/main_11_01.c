@@ -70,8 +70,8 @@ void print_matrix(int n, double *  A) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             printf("%*lf", 13, A[i * n + j]);
-        }
-    }printf("\n");
+        } printf("\n");
+    } printf("\n");
 }
 
 
@@ -118,8 +118,6 @@ int main(int argc, char *argv[]) {
 
         else { return errors(ERROR_INPUT); }
     }
-
-    printf("%lf %lf %d\n", precision, epsilon, max_iter);
 
     /* открытие файла с входными значениями */
     if ((file = fopen(path_in, "r")) == NULL) {
