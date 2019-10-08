@@ -137,14 +137,16 @@ int main(int argc, char *argv[]) {
     /* выделение памяти под массивы */
     A = (double*)malloc(n * n * sizeof(double));
 
-
     E = (double*)malloc(n * sizeof(double));
-    X = (double*)malloc(n * sizeof(double));
-    tmp_sim = (double*)malloc(sim_memsize_11_01(n));
+    tmp_sim = (double*)malloc(sim_memsize_11_01(n * n));
     tmp_evc = (double*)malloc(sim_memsize_11_01(n));
 
     /* заполнение массива дополнительной памяти */
-    // for (int i = 0; i < n; i++) { tmp[i] = i; }
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            tmp_sim[i * n + j] = 0;
+        }
+    }
 
     /* считывание матрицы A с файла */
     for (int i = 0; i < n; i++) {
