@@ -77,6 +77,8 @@ void print_matrix(int n, double *  A) {
 
 int main(int argc, char *argv[]) {
 
+    var_for_debug = 1;
+
     FILE *file;
 
     double precision = 1e-14; // определяет, числа меньше какого считать нулем
@@ -138,11 +140,11 @@ int main(int argc, char *argv[]) {
     A = (double*)malloc(n * n * sizeof(double));
 
     E = (double*)malloc(n * sizeof(double));
-    tmp_sim = (double*)malloc(sim_memsize_11_01(n * n + n));
+    tmp_sim = (double*)malloc(sim_memsize_11_01(2 * n * n + n));
     tmp_evc = (double*)malloc(sim_memsize_11_01(n));
 
     /* заполнение массива дополнительной памяти */
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < 2 * n; ++i) {
         for (int j = 0; j < n; ++j) {
             tmp_sim[i * n + j] = 0;
         }
@@ -171,7 +173,7 @@ int main(int argc, char *argv[]) {
 
     start = clock(); // начало работы выполнения алгоритма
     int answer_code_sim = sim_11_01(n, A, tmp_sim, precision); // Основная функция модуля упрощения матрицы
-    int answer_code_evc = evc_11_01(n, max_iter, epsilon, A, E, tmp_evc, precision); // Основная функция модуля построения собственных значений матрицы
+    //int answer_code_evc = evc_11_01(n, max_iter, epsilon, A, E, tmp_evc, precision); // Основная функция модуля построения собственных значений матрицы
     end = clock();   // конец работы выполнения алгоритма
 
     /* печать матриц после преобразований подпрограммы */
@@ -213,7 +215,6 @@ int main(int argc, char *argv[]) {
 
     free(A);
     free(E);
-    free(X);
     free(tmp_sim);
     free(tmp_evc);
 
