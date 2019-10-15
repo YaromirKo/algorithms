@@ -25,7 +25,7 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
     double norm_a_k;
     double norm_x_k;
 
-    for (int k = 0; k < n - 1; ++k) {
+    for (int k = 0; k < n - 2; ++k) {
 
         if (var_for_debug == 1) {
             printf("==============================================");
@@ -61,19 +61,12 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
             ELEM(tmp, n, (2 * n), j) /= norm_x_k;
         }
 
-        if (var_for_debug == 1) {
-            printf("vector x_k: ");
-            for (int j = 0; j < n; ++j) {
-                printf(" %lf ", ELEM(tmp, n, (2 * n), j));
-            } printf("\n");
-        }
-
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 if (i == j && i <= k && j <= k) ELEM(tmp, n, i, j) = 1;
                 else if (i > k && j > k) {
                     if (i == j) ELEM(tmp, n, i, j) = 1 - 2 * ELEM(tmp, n, (2 * n), i) * ELEM(tmp, n, (2 * n), j);
-                    else ELEM(tmp, n, i, j) = 2 * ELEM(tmp, n, (2 * n), i) * ELEM(tmp, n, (2 * n), j);
+                    else ELEM(tmp, n, i, j) = - 2 * ELEM(tmp, n, (2 * n), i) * ELEM(tmp, n, (2 * n), j);
                 }
                 else ELEM(tmp, n, i, j) = 0;
             }
@@ -91,6 +84,7 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
                 ELEM(tmp, n, (n + i), j) = 0;
                 for (int l = 0; l < n; ++l) {
                     ELEM(tmp, n, (n + i), j) += ELEM(tmp, n, i, l) * ELEM(A, n, l, j);
+                    if (fabs(ELEM(tmp, n, (n + i), j)) <= precision) ELEM(tmp, n, (n + i), j) = 0;
                 }
             }
         }
@@ -109,6 +103,7 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
                 ELEM(A, n, i, j) = 0;
                 for (int l = 0; l < n; ++l) {
                     ELEM(A, n, i, j) += ELEM(tmp, n, (n + i), l) * ELEM(tmp, n, l, j);
+                    if (fabs(ELEM(A, n, i, j)) <= precision) ELEM(A, n, i, j) = 0;
                 }
             }
         }
