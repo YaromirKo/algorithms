@@ -3,6 +3,7 @@
 
 #define ELEM(matrix, len, row, col) (matrix + len * row)[col]
 
+// печать матрицы n * n
 void print_m(int n, double * A) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -11,6 +12,7 @@ void print_m(int n, double * A) {
     } printf("\n");
 }
 
+// печать дополнительной матрицы, которая используется для перменожения 2х матрицы n * n  размерности
 void print_m_tmp(int n, double * tmp) {
     for (int i = n; i < 2 * n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -27,6 +29,7 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
 
     for (int k = 0; k < n - 2; ++k) {
 
+        // отладочная печать
         if (var_for_debug == 1) {
             printf("==============================================");
             printf("\n\t%s %d\n", "Iteration number: ", k + 1);
@@ -42,12 +45,14 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
 
         norm_a_k = sqrt(pow(ELEM(A, n, (k + 1), k), 2) + s_k);
 
+        // отладочная печать - вывод значения нормы a_k
         if (var_for_debug == 1) printf("norm a_k = %lf\n", norm_a_k);
 
         ELEM(tmp, n, (2 * n), (k + 1)) = ELEM(A, n, (k + 1), k) - norm_a_k;
 
+        // отладочная печать - вывод вектора x_k
         if (var_for_debug == 1) {
-            printf("vector x_k: ");
+            printf("vector X_k: ");
             for (int j = 0; j < n; ++j) {
                 printf(" %lf ", ELEM(tmp, n, (2 * n), j));
             } printf("\n");
@@ -55,7 +60,8 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
 
         norm_x_k = sqrt(pow(ELEM(tmp, n, (2 * n), (k + 1)), 2) + s_k);
 
-        if (var_for_debug == 1) printf("norm x_k = %lf\n", norm_x_k);
+        // отладочная печать - вывод значения нормы X_k
+        if (var_for_debug == 1) printf("norm X_k = %lf\n", norm_x_k);
 
         for (int j = k + 1; j < n; ++j) {
             ELEM(tmp, n, (2 * n), j) /= norm_x_k;
@@ -72,6 +78,7 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
             }
         }
 
+        // отладочная печать - вывод матрицы U и A
         if (var_for_debug == 1) {
             printf("matrix U\n");
             print_m(n, tmp);
@@ -89,10 +96,9 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
             }
         }
 
+        // отладочная печать - вывод матрицы U * A и U
         if (var_for_debug == 1) {
             printf("U * A\n");
-            print_m_tmp(n, tmp);
-            printf("matrix A in tmp\n");
             print_m_tmp(n, tmp);
             printf("matrix U\n");
             print_m(n, tmp);
@@ -108,6 +114,7 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
             }
         }
 
+        // отладочная печать - вывод матрицы A * U
         if (var_for_debug == 1) {
             printf("A * U\n");
             print_m(n, A);
