@@ -41,27 +41,45 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
         }
 
         norm_a_k = sqrt(pow(ELEM(A, n, (k + 1), k), 2) + s_k);
+
+        if (var_for_debug == 1) printf("norm a_k = %lf\n", norm_a_k);
+
         ELEM(tmp, n, (2 * n), (k + 1)) = ELEM(A, n, (k + 1), k) - norm_a_k;
+
+        if (var_for_debug == 1) {
+            printf("vector x_k: ");
+            for (int j = 0; j < n; ++j) {
+                printf(" %lf ", ELEM(tmp, n, (2 * n), j));
+            } printf("\n");
+        }
+
         norm_x_k = sqrt(pow(ELEM(tmp, n, (2 * n), (k + 1)), 2) + s_k);
+
+        if (var_for_debug == 1) printf("norm x_k = %lf\n", norm_x_k);
 
         for (int j = k + 1; j < n; ++j) {
             ELEM(tmp, n, (2 * n), j) /= norm_x_k;
         }
 
         if (var_for_debug == 1) {
-            printf("\nmatrix U(x)\n");
+            printf("vector x_k: ");
+            for (int j = 0; j < n; ++j) {
+                printf(" %lf ", ELEM(tmp, n, (2 * n), j));
+            } printf("\n");
         }
 
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 if (i == j && i <= k && j <= k) ELEM(tmp, n, i, j) = 1;
-                else if (i > k && j > k) ELEM(tmp, n, i, j) = 1 - 2 * ELEM(tmp, n, (2 * n), i) * ELEM(tmp, n, (2 * n), j);
+                else if (i > k && j > k) {
+                    if (i == j) ELEM(tmp, n, i, j) = 1 - 2 * ELEM(tmp, n, (2 * n), i) * ELEM(tmp, n, (2 * n), j);
+                    else ELEM(tmp, n, i, j) = 2 * ELEM(tmp, n, (2 * n), i) * ELEM(tmp, n, (2 * n), j);
+                }
                 else ELEM(tmp, n, i, j) = 0;
             }
         }
 
         if (var_for_debug == 1) {
-            print_m(n, tmp);
             printf("matrix U\n");
             print_m(n, tmp);
             printf("matrix A\n");

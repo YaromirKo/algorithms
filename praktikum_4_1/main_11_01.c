@@ -197,7 +197,7 @@ int main(int argc, char *argv[]) {
         for (int i = 0; i < n; i++) {
             fprintf(file, "%1.9lf\n", X[i]);
             if (var_for_debug == 1 || print__matrix == 1) {
-                printf("\tx_%d = %lf\n", i + 1, X[i]); // печать ответа в консоль
+                // printf("\tx_%d = %lf\n", i + 1, X[i]); // печать ответа в консоль
             }
         } if (var_for_debug == 1 || print__matrix == 1) {
             printf("\n");
