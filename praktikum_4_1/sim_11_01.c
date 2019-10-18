@@ -75,7 +75,7 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
             for (int j = 0; j < n; ++j) {
                 if (i == j && i <= k && j <= k) ELEM(tmp, n, i, j) = 1; // по главной диагонали 1 до K элемента
                 else if (i > k && j > k) {
-                    // пермножаем вектор x_k на транспонированный вектор x_k и отнимаем от единичной матрицы
+                    // пермножаем вектор x_k на транспонированный вектор x_k и отнимаем от единичной матрицы по диагонали
                     if (i == j) ELEM(tmp, n, i, j) = 1 - 2 * ELEM(tmp, n, (2 * n), i) * ELEM(tmp, n, (2 * n), j);
                     else ELEM(tmp, n, i, j) = - 2 * ELEM(tmp, n, (2 * n), i) * ELEM(tmp, n, (2 * n), j);
                 }
@@ -97,7 +97,7 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
                 ELEM(tmp, n, (n + i), j) = 0;
                 for (int l = 0; l < n; ++l) {
                     ELEM(tmp, n, (n + i), j) += ELEM(tmp, n, i, l) * ELEM(A, n, l, j);
-                    // если элемент матрицы <= precision, тогда на место этого лемента ставим 0
+                    // если элемент матрицы <= precision, тогда на место этого элемента ставим 0
                     if (fabs(ELEM(tmp, n, (n + i), j)) <= precision) ELEM(tmp, n, (n + i), j) = 0;
                 }
             }
@@ -117,7 +117,7 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
                 ELEM(A, n, i, j) = 0;
                 for (int l = 0; l < n; ++l) {
                     ELEM(A, n, i, j) += ELEM(tmp, n, (n + i), l) * ELEM(tmp, n, l, j);
-                    // если элемент матрицы <= precision, тогда на место этого лемента ставим 0
+                    // если элемент матрицы <= precision, тогда на место этого элемента ставим 0
                     if (fabs(ELEM(A, n, i, j)) <= precision) ELEM(A, n, i, j) = 0;
                 }
             }
