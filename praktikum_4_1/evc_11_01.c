@@ -16,7 +16,7 @@ void print_m2(int n, double * A) {
 
 int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E, double * tmp, double precision) {
 
-    for (int k = 0; k < 3000; ++k) {
+    for (int k = 0; k < 20; ++k) {
 
         // отладочная печать
         if (var_for_debug == 1) {
@@ -52,12 +52,19 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
                 _A(A, n, i, j) = 0;
                 for (int l = 0; l < n; ++l) {
 
-                    if (i == l) elem_L = 1;
-                    else if (i - 1 == l) elem_L = L(tmp, n, i, l);
+                    if (l == j) elem_L = 1;
+                    else if (l - 1 == j) elem_L = L(tmp, n, l, j);
                     else elem_L = 0;
 
-                    if (l > j) elem_R = 0;
-                    else elem_R = R(tmp, n, l, j);
+                    if (i > l) elem_R = 0;
+                    else elem_R = R(tmp, n, i, l);
+
+//                    if (i == l) elem_L = 1;
+//                    else if (i - 1 == l) elem_L = L(tmp, n, i, l);
+//                    else elem_L = 0;
+//
+//                    if (l > j) elem_R = 0;
+//                    else elem_R = R(tmp, n, l, j);
 
                     _A(A, n, i, j) += elem_L * elem_R;
                 }
