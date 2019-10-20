@@ -137,15 +137,15 @@ int main(int argc, char *argv[]) {
 
     /* выделение памяти под массивы */
     A = (double*)malloc(n * n * sizeof(double));
-
     E = (double*)malloc(n * sizeof(double));
     tmp_sim = (double*)malloc(sim_memsize_11_01(2 * n * n + n));
-    tmp_evc = (double*)malloc(sim_memsize_11_01(n));
+    tmp_evc = (double*)malloc(evc_memsize_11_01(n * n));
 
     /* заполнение массива дополнительной памяти */
     for (int i = 0; i < 2 * n; ++i) {
         for (int j = 0; j < n; ++j) {
             tmp_sim[i * n + j] = 0;
+            if (i < n) tmp_evc[i * n + j] = 0;
         }
     }
 
