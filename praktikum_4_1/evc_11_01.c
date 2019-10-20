@@ -14,9 +14,23 @@ void print_m2(int n, double * A) {
     } printf("\n");
 }
 
+double search_norm_a_k(int n, double * A) {
+
+    double norm_a_k = 0;
+    for (int i = 0; i < n; ++i) {
+        double tmp = 0;
+        for (int j = 0; j < n; ++j) {
+            tmp += _A(A, n, i, j);
+        }
+        if (tmp > norm_a_k) norm_a_k = tmp;
+    }
+
+    return norm_a_k;
+}
+
 int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E, double * tmp, double precision) {
 
-    for (int k = 0; k < 19; ++k) {
+    for (int k = 0; k < 37; ++k) {
 
         // отладочная печать
         if (var_for_debug == 1) {
@@ -72,6 +86,12 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
                     _A(A, n, i, j) += elem_L * elem_R;
                 }
             }
+        }
+
+        double tochnost = epsilon * search_norm_a_k(n, A);
+        printf("%1.20lf\n", tochnost);
+        for (int i = 0; i < n; ++i) {
+            if (fabs(_A(A, n, (i + 1), i)) < tochnost) _A(A, n, (i + 1), i) = 0;
         }
 
         // отладочная печать - печатаем матрицу A, полученную после перемножения R и L
