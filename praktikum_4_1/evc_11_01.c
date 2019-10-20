@@ -16,7 +16,7 @@ void print_m2(int n, double * A) {
 
 int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E, double * tmp, double precision) {
 
-    for (int k = 0; k < 20; ++k) {
+    for (int k = 0; k < 19; ++k) {
 
         // отладочная печать
         if (var_for_debug == 1) {
@@ -25,19 +25,22 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
             printf("==============================================\n");
         }
 
+        // заполняем первую строку матрицы R
         for (int i = 0; i < n; ++i) R(tmp, n, 0, i) = _A(A, n, 0, i);
 
+        // заполняем массив tmp - служащиц для хранеия необходимых элементов матриц L и R для последующего их перемножения
         for (int i = 1; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
-                if (i - 1 == j) {
+                if (i - 1 == j) { // элементы 2ой главной диагонали для L
                     L(tmp, n, i, (i - 1)) = _A(A, n, i, (i - 1)) / R(tmp, n, (i - 1), (i - 1));
                 }
-                if (i == j || j > i) {
+                if (i == j || j > i) { // все элементы выше и включая саму диагональ матрицы R
                     R(tmp, n, i, j) = _A(A, n, i, j) - L(tmp, n, i, (i - 1)) * R(tmp, n, (i - 1), j);
                 }
             }
         }
 
+        // отладочная печать - печать матрицы L и R
         if (var_for_debug == 1) {
             printf("matrix L and R\n");
             print_m2(n, tmp);
@@ -71,8 +74,9 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
             }
         }
 
+        // отладочная печать - печатаем матрицу A, полученную после перемножения R и L
         if (var_for_debug == 1) {
-            printf("matrix after multiplication L * R\n");
+            printf("matrix after multiplication R * L\n");
             print_m2(n, A);
         }
     }
