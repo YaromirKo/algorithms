@@ -171,7 +171,7 @@ int main(int argc, char *argv[]) {
     }
 
     start = clock(); // начало работы выполнения алгоритма
-    /*int answer_code_sim =*/ sim_11_01(n, A, tmp_sim, precision); // Основная функция модуля упрощения матрицы
+                          sim_11_01(n, A, tmp_sim, precision); // Основная функция модуля упрощения матрицы
     int answer_code_evc = evc_11_01(n, max_iter, epsilon, A, E, tmp_evc, precision); // Основная функция модуля построения собственных значений матрицы
     end = clock();   // конец работы выполнения алгоритма
 
@@ -191,23 +191,18 @@ int main(int argc, char *argv[]) {
     }
 
     /* записываем в файл результат */
-    if (answer_code_evc == 0) {
-        fprintf(file, "%d\n", n);
-        for (int i = 0; i < n; i++) {
-           // fprintf(file, "%1.9lf\n", X[i]);
-            if (var_for_debug == 1 || print__matrix == 1) {
-                // printf("\tx_%d = %lf\n", i + 1, X[i]); // печать ответа в консоль
-            }
-        } if (var_for_debug == 1 || print__matrix == 1) {
-            printf("\n");
+    fprintf(file, "%d\n", n);
+
+    for (int i = 0; i < n; i++) {
+        fprintf(file, "%1.9lf\n", E[i]);
+        if (var_for_debug == 1 || print__matrix == 1) {
+            printf("\te_%d = %1.9lf\n", i + 1, E[i]); // печать ответа в консоль
         }
     }
-    else {
-        fprintf(file, "%d\n", 0); // если решения системы не существует и выходной файл будет содержать одну единственную цифру '0'
-        if (var_for_debug == 1 || print__matrix == 1) {
-            printf("no solutions");
-            // printf("result: %d\n", 0);
-        }
+
+    if (var_for_debug == 1) {
+        if (answer_code_evc == 1) printf("the method does not converge for the specified number of iterations\n");
+        else printf("work completed successfully\n");
     }
 
     fclose(file);

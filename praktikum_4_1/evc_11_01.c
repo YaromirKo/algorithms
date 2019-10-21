@@ -18,9 +18,10 @@ void print_m2(int n, double * A) {
 
 int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E, double * tmp, double precision) {
 
-    double test_epsilon = 1e-6;
+    int endless_computing = 1;
+    if (max_iterations > 0) endless_computing = max_iterations;
 
-    for (int k = 0; k < 50; ++k) {
+    for (int k = 0; k < endless_computing; ++k) {
 
         // отладочная печать
         if (var_for_debug == 1) {
@@ -80,12 +81,12 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
         for (int i = 0; i < n; ++i) {
             tmp(tmp, n, (n + _switch), i) = _A(A, n, i, i);
             if (k > 0) {
-                if (_switch == 0) if (fabs(fabs(tmp(tmp, n, n, i)) - fabs(tmp(tmp, n, (n + 1), i))) < test_epsilon) count++;
-                else if (fabs(fabs(tmp(tmp, n, (n + 1), i)) - fabs(tmp(tmp, n, n, i))) < test_epsilon) count++;
+                if (_switch == 0) if (fabs(tmp(tmp, n, n, i) - tmp(tmp, n, (n + 1), i)) < epsilon) count++;
+                else if (fabs(tmp(tmp, n, (n + 1), i) - tmp(tmp, n, n, i)) < epsilon) count++;
                 E(E, n, 0, i) = _A(A, n, i, i);
             }
         }
-        
+
         // отладочная печать - печатаем матрицу A, полученную после перемножения R и L
         if (var_for_debug == 1) {
             printf("matrix after multiplication R * L\n");
@@ -94,9 +95,10 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
 
         if (count == n) {
             // 0 - работа завершена успешно
-            printf("done\n");
+            printf("the difference of the diagonal elements k + 1 and k matrices is less than epsilon\n");
             return 0;
         }
+        endless_computing++;
     }
 
     // 1 - метод не сходится за указанное число итераций
