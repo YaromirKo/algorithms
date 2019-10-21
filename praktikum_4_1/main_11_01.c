@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
     A = (double*)malloc(n * n * sizeof(double));
     E = (double*)malloc(n * sizeof(double));
     tmp_sim = (double*)malloc(sim_memsize_11_01(2 * n * n + n));
-    tmp_evc = (double*)malloc(evc_memsize_11_01(n * n));
+    tmp_evc = (double*)malloc(evc_memsize_11_01(n * n + 2 * n));
 
     /* заполнение массива дополнительной памяти */
     for (int i = 0; i < 2 * n; ++i) {

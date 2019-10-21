@@ -4,6 +4,8 @@
 #define _A(matrix, len, row, col) (matrix + len * row)[col]
 #define L(matrix, len, row, col) (matrix + len * row)[col]
 #define R(matrix, len, row, col) (matrix + len * row)[col]
+#define tmp(matrix, len, row, col) (matrix + len * row)[col]
+#define E(matrix, len, row, col) (matrix + len * row)[col]
 
 // печать матрицы n * n
 void print_m2(int n, double * A) {
@@ -14,23 +16,11 @@ void print_m2(int n, double * A) {
     } printf("\n");
 }
 
-double search_norm_a_k(int n, double * A) {
-
-    double norm_a_k = 0;
-    for (int i = 0; i < n; ++i) {
-        double tmp = 0;
-        for (int j = 0; j < n; ++j) {
-            tmp += _A(A, n, i, j);
-        }
-        if (tmp > norm_a_k) norm_a_k = tmp;
-    }
-
-    return norm_a_k;
-}
-
 int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E, double * tmp, double precision) {
 
-    for (int k = 0; k < 37; ++k) {
+    double test_epsilon = 1e-6;
+
+    for (int k = 0; k < 50; ++k) {
 
         // отладочная печать
         if (var_for_debug == 1) {
@@ -76,30 +66,48 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
                     if (i > l) elem_R = 0;
                     else elem_R = R(tmp, n, i, l);
 
-//                    if (i == l) elem_L = 1;
-//                    else if (i - 1 == l) elem_L = L(tmp, n, i, l);
-//                    else elem_L = 0;
-//
-//                    if (l > j) elem_R = 0;
-//                    else elem_R = R(tmp, n, l, j);
-
                     _A(A, n, i, j) += elem_L * elem_R;
                 }
             }
         }
 
-        double tochnost = epsilon * search_norm_a_k(n, A);
-        printf("%1.20lf\n", tochnost);
+        int count = 0;
+        int _switch = 1;
+
+        if (k % 2 == 0) _switch = 0;
+
         for (int i = 0; i < n; ++i) {
-            if (fabs(_A(A, n, (i + 1), i)) < tochnost) _A(A, n, (i + 1), i) = 0;
+            tmp(tmp, n, (n + _switch), i) = _A(A, n, i, i);
+            if (k > 0) {
+                if (_switch == 0) {
+                    printf("%lf\n", fabs(fabs(tmp(tmp, n, n, i)) - fabs(tmp(tmp, n, (n + 1), i))));
+                    if (fabs(tmp(tmp, n, n, i)) - fabs(tmp(tmp, n, (n + 1), i)) < test_epsilon) count++;
+                }
+                else {
+                    printf("%lf\n", fabs(fabs(tmp(tmp, n, (n + 1), i)) - fabs(tmp(tmp, n, n, i))));
+                    if (fabs(tmp(tmp, n, (n + 1), i)) - fabs(tmp(tmp, n, n, i)) < test_epsilon) count++;
+                }
+                E(E, n, 0, i) = _A(A, n, i, i);
+            }
         }
+
+        for (int i = 0; i < n; ++i) {
+            printf(" %lf ", tmp(tmp, n, (n + _switch), i));
+        } printf("\n");
 
         // отладочная печать - печатаем матрицу A, полученную после перемножения R и L
         if (var_for_debug == 1) {
             printf("matrix after multiplication R * L\n");
             print_m2(n, A);
         }
+
+        if (count == n) {
+            // 0 - работа завершена успешно
+            printf("done\n");
+            return 0;
+        }
     }
 
-    return 0;
+    // 1 - метод не сходится за указанное число итераций
+    return 1;
 }
