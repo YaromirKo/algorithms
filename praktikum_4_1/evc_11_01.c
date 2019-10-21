@@ -67,6 +67,7 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
                     else elem_R = R(tmp, n, i, l);
 
                     _A(A, n, i, j) += elem_L * elem_R;
+                    if (fabs(_A(A, n, i, j)) <= precision) _A(A, n, i, j) = 0;
                 }
             }
         }
@@ -79,22 +80,12 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
         for (int i = 0; i < n; ++i) {
             tmp(tmp, n, (n + _switch), i) = _A(A, n, i, i);
             if (k > 0) {
-                if (_switch == 0) {
-                    printf("%lf\n", fabs(fabs(tmp(tmp, n, n, i)) - fabs(tmp(tmp, n, (n + 1), i))));
-                    if (fabs(tmp(tmp, n, n, i)) - fabs(tmp(tmp, n, (n + 1), i)) < test_epsilon) count++;
-                }
-                else {
-                    printf("%lf\n", fabs(fabs(tmp(tmp, n, (n + 1), i)) - fabs(tmp(tmp, n, n, i))));
-                    if (fabs(tmp(tmp, n, (n + 1), i)) - fabs(tmp(tmp, n, n, i)) < test_epsilon) count++;
-                }
+                if (_switch == 0) if (fabs(fabs(tmp(tmp, n, n, i)) - fabs(tmp(tmp, n, (n + 1), i))) < test_epsilon) count++;
+                else if (fabs(fabs(tmp(tmp, n, (n + 1), i)) - fabs(tmp(tmp, n, n, i))) < test_epsilon) count++;
                 E(E, n, 0, i) = _A(A, n, i, i);
             }
         }
-
-        for (int i = 0; i < n; ++i) {
-            printf(" %lf ", tmp(tmp, n, (n + _switch), i));
-        } printf("\n");
-
+        
         // отладочная печать - печатаем матрицу A, полученную после перемножения R и L
         if (var_for_debug == 1) {
             printf("matrix after multiplication R * L\n");
