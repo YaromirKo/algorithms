@@ -16,6 +16,20 @@ void print_m2(int n, double * A) {
     } printf("\n");
 }
 
+void bubble_sort(int n, double * matrix) {
+
+    double swap_el;
+    for (int i = 0; i < n - 1; ++i) {
+        for (int j = 0; j < n - 1 - i; ++j) {
+            if (matrix[j] > matrix[j + 1]) {
+                swap_el = matrix[j];
+                matrix[j] = matrix[j + 1];
+                matrix[j + 1] = swap_el;
+            }
+        }
+    }
+}
+
 int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E, double * tmp, double precision) {
 
     // если значение max_iterations <= 0, то алгоритм должен выполнятся до получения требуемой точности (без ограничения на число итераций).
@@ -98,13 +112,16 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
         }
 
         if (diagonal_el_counter == n) {
+            // сортируем массив E по возрастанию
+            bubble_sort(n, E);
             // 0 - работа завершена успешно
             printf("the difference of the diagonal elements k + 1 and k matrices is less than epsilon\n");
             return 0;
         }
         steps_count++; // тк max_iterations <= 0 и не достигнута необходимая точность, то увеличиваем счетчик шагов
     }
-
+    // сортируем массив E по возрастанию
+    bubble_sort(n, E);
     // 1 - метод не сходится за указанное число итераций
     return 1;
 }
