@@ -77,8 +77,6 @@ void print_matrix(int n, double *  A) {
 
 int main(int argc, char *argv[]) {
 
-    var_for_debug = 1;
-
     FILE *file;
 
     double precision = 1e-14; // определяет, числа меньше какого считать нулем
@@ -180,11 +178,6 @@ int main(int argc, char *argv[]) {
         print_matrix(n, A);
     }
 
-    /* печать времени работы подпрограммы */
-    if (print__time == 1) {
-        printf("\nexecution time: %lf\n\n", (double)(end - start) / CLOCKS_PER_SEC);
-    }
-
     /* открытие файла на запись ответа */
     if ((file = fopen(path_out, "w")) == NULL) {
         return errors(ERROR_OPEN_FILE_OUT);
@@ -203,6 +196,11 @@ int main(int argc, char *argv[]) {
     if (var_for_debug == 1) {
         if (answer_code_evc == 1) printf("the method does not converge for the specified number of iterations\n");
         else printf("work completed successfully\n");
+    }
+
+    /* печать времени работы подпрограммы */
+    if (print__time == 1) {
+        printf("\nexecution time: %lf\n\n", (double)(end - start) / CLOCKS_PER_SEC);
     }
 
     fclose(file);

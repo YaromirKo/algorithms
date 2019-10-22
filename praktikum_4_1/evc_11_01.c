@@ -18,6 +18,7 @@ void print_m2(int n, double * A) {
 
 void bubble_sort(int n, double * matrix) {
 
+    int check = 0;
     double swap_el;
     for (int i = 0; i < n - 1; ++i) {
         for (int j = 0; j < n - 1 - i; ++j) {
@@ -25,8 +26,11 @@ void bubble_sort(int n, double * matrix) {
                 swap_el = matrix[j];
                 matrix[j] = matrix[j + 1];
                 matrix[j + 1] = swap_el;
+                check = 1;
             }
         }
+        if (check == 0) break;
+        else check = 0;
     }
 }
 
@@ -69,7 +73,7 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
         double elem_L = 0;
         double elem_R = 0;
 
-        // перемножаем L и R
+        // перемножаем R and L
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 _A(A, n, i, j) = 0;
@@ -115,10 +119,10 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
             // сортируем массив E по возрастанию
             bubble_sort(n, E);
             // 0 - работа завершена успешно
-            printf("the difference of the diagonal elements k + 1 and k matrices is less than epsilon\n");
+            if (var_for_debug == 1) printf("the difference of the diagonal elements k + 1 and k matrices is less than epsilon\n");
             return 0;
         }
-        steps_count++; // тк max_iterations <= 0 и не достигнута необходимая точность, то увеличиваем счетчик шагов
+        if (max_iterations <= 0) steps_count++; // тк max_iterations <= 0 и не достигнута необходимая точность, то увеличиваем счетчик шагов
     }
     // сортируем массив E по возрастанию
     bubble_sort(n, E);
