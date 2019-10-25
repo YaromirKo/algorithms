@@ -32,7 +32,7 @@ int sim_11_01(int n, double * A, double * tmp, double precision) {
         // отладочная печать
         if (var_for_debug == 1) {
             printf("==============================================");
-            printf("\n\t%s %d\n", "Iteration number: ", k + 1);
+            printf("\n\t%s %d\n", "Simplification module\n\tIteration number: ", k + 1);
             printf("==============================================\n");
         }
 

@@ -194,8 +194,8 @@ int main(int argc, char *argv[]) {
     }
 
     if (var_for_debug == 1) {
-        if (answer_code_evc == 1) printf("the method does not converge for the specified number of iterations\n");
-        else printf("work completed successfully\n");
+        if (answer_code_evc == 1) printf("\nthe method does not converge for the specified number of iterations\n");
+        else printf("\nwork completed successfully\n");
     }
 
     /* печать времени работы подпрограммы */

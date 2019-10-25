@@ -41,7 +41,7 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
         // отладочная печать
         if (var_for_debug == 1) {
             printf("==============================================");
-            printf("\n\t%s %d\n", "Iteration number: ", k + 1);
+            printf("\n\t%s %d\n", "Computing module\n\tIteration number: ", k + 1);
             printf("==============================================\n");
         }
 
@@ -112,16 +112,18 @@ int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E,
         }
 
         if (diagonal_el_counter == n) {
-            // сортируем массив E по возрастанию
-            bubble_sort(n, E);
-            // 0 - работа завершена успешно
-            if (var_for_debug == 1) printf("the difference of the diagonal elements k + 1 and k matrices is less than epsilon\n");
-            return 0;
+            if (max_iterations <= 0 || (max_iterations > 0 && (k + 1) == max_iterations)) {
+                // сортируем массив E по возрастанию
+                bubble_sort(n, E);
+                // 0 - работа завершена успешно
+                return 0;
+            }
         }
         if (max_iterations <= 0) steps_count++; // тк max_iterations <= 0 и не достигнута необходимая точность, то увеличиваем счетчик шагов
     }
     // сортируем массив E по возрастанию
     bubble_sort(n, E);
+
     // 1 - метод не сходится за указанное число итераций
     return 1;
 }
