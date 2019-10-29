@@ -17,7 +17,7 @@ Where options include:
  -eps=<num>        epsilon [default - 1e-10]
  -max_iter=<num>   limit number of iterations [default - 0, i.e. not limit]
  -h, -?            print this and exit
-Default input_file_name value is 11_01_in.txt, default output_file_name value is 11_01_out.txt.
+Default input_file_name value is 20_01_in.txt, default output_file_name value is 20_01_out.txt.
 
 Здесь первая строчка - расположение бинарника программы (первое строковое поле аргументов функции main);
                        precision определяет, числа меньше какого считать нулем;
@@ -91,13 +91,13 @@ Default input_file_name value is 11_01_in.txt, default output_file_name value is
 	   	Берем диагональные элементы матриц на k и k+1 итерации и смотрим разницу этих элементов. Если разница < epsilon для каждого элемента, то берем значения диагольной матрицы k+1 шага. 
 		Иначе повторяем операции пункта 2 до тех пор, пока не получим необходимую точность.
 
-Функции в файле main_11_01.с:
+Функции в файле main_20_01.с:
 
-  size_t sim_memsize_11_01(int n) - определение размера массива дополнительной памяти для модуля sim - модуля упрощения.
+  size_t sim_memsize_20_01(int n) - определение размера массива дополнительной памяти для модуля sim - модуля упрощения.
 				    Входной аргумент - целое число.
 				    Возвращаемое значение - int - n * sizeof(double).
 
-  size_t evc_memsize_11_01(int n) - определение размера массива дополнительной памяти для модуля evc - вычислительный модуль.
+  size_t evc_memsize_20_01(int n) - определение размера массива дополнительной памяти для модуля evc - вычислительный модуль.
 				    Входной аргумент - целое число.
 				    Возвращаемое значение - int - n * sizeof(double).
 
@@ -132,7 +132,7 @@ Default input_file_name value is 11_01_in.txt, default output_file_name value is
 				     Возвращаемое значение в случае успеха 0 (SUCCESS).
 
 
-Функции в файле sim_11_01.с:
+Функции в файле sim_20_01.с:
 
   void print_m(int n, double * A) - печать матриц A.
 				    Агрументы: размерность матрицы (для A, будет n*n), матрица A.
@@ -140,13 +140,13 @@ Default input_file_name value is 11_01_in.txt, default output_file_name value is
  void print_m_tmp(int n, double * tmp) - печать дополнительной матрицы, которая используется для перменожения 2х матриц, n*n  размерности.
  					 Аргументы: размерность матрицы, массив tmp. 
 
-  int sim_11_01(int n, double * A, double * tmp, double precision) - основная функция модуля упрощения матрицы, сводящая входную матрицу A к почти треугольному виду унитарным подобием методом отражений.
+  int sim_20_01(int n, double * A, double * tmp, double precision) - основная функция модуля упрощения матрицы, сводящая входную матрицу A к почти треугольному виду унитарным подобием методом отражений.
   								     Аргументы: размерность n, матрица A (массив с матрицей системы в формате a_1_1,..., a_1_n, a_2_1,..., a_2_n,..., a_n_n), 
 										массив дополнительной памяти tmp (массив размером 2*n*n+n - под 2 доплнитильные матрицы 
 										(для построения матрицы U_x и вспомогательная для перемножения матриц) и один вектор размером n элементов), 
 										precision определяет, числа меньше какого считать нулем.
   								     Возвращаемое значение 0: работа завершена успешно, матрица упрощена.
-Функции в файле evc_11_01.c:
+Функции в файле evc_20_01.c:
 
 	void print_m(int n, double * A) - печать матриц A.
 					  Агрументы: размерность матрицы (для A, будет n*n), матрица A.
@@ -154,7 +154,7 @@ Default input_file_name value is 11_01_in.txt, default output_file_name value is
 	void bubble_sort(int n, double * vector) - сортировка элементов по возрастанию.
 						   Аргументы: размер вектора, вектор элементов, который надо упорядоченных по возрастанию.
 
-	int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E, double * tmp, double precision) - 
+	int evc_20_01(int n, int max_iterations, double epsilon, double * A, double * E, double * tmp, double precision) -
 			основная функция модуля построения собственных значений матрицы.
 															   
 			Аргументы: размерность n, параметр max_iterations задает ограничение на число итераций алгоритма, если за указанное число итераций алгоритм не сошелся (не достигнута точность epsilon) 
@@ -171,6 +171,6 @@ Default input_file_name value is 11_01_in.txt, default output_file_name value is
 	библиотеки - stdio.h, stdlib.h, math.h, time.h.
 	две глобальные переменные - int var_for_debug для отладочной печати,
 								int var_for_errors для печати ошибок.
-	int sim_11_01(int n, double * A, double * tmp, double precision);
-	int evc_11_01(int n, int max_iterations, double epsilon, double* A, double* E, double* tmp, double precision);
+	int sim_20_01(int n, double * A, double * tmp, double precision);
+	int evc_20_01(int n, int max_iterations, double epsilon, double* A, double* E, double* tmp, double precision);
 	

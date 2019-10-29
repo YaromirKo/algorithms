@@ -1,5 +1,5 @@
 // модуль упрощения
-#include "task_11_01.h"
+#include "task_20_01.h"
 
 #define ELEM(matrix, len, row, col) (matrix + len * row)[col]
 
@@ -21,7 +21,7 @@ void print_m_tmp(int n, double * tmp) {
     } printf("\n");
 }
 
-int sim_11_01(int n, double * A, double * tmp, double precision) {
+int sim_20_01(int n, double * A, double * tmp, double precision) {
 
     double s_k; // вспомогательнная переменная для нахождения суммы квадратов элементов матрицы под 2ой главной диагонали
     double norm_a_k; // норма a_k

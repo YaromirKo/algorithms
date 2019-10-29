@@ -1,5 +1,5 @@
 // вычислительный модуль
-#include "task_11_01.h"
+#include "task_20_01.h"
 
 #define ELEM(matrix, len, row, col) (matrix + len * row)[col]
 
@@ -30,7 +30,7 @@ void bubble_sort(int n, double * vector) {
     }
 }
 
-int evc_11_01(int n, int max_iterations, double epsilon, double * A, double * E, double * tmp, double precision) {
+int evc_20_01(int n, int max_iterations, double epsilon, double * A, double * E, double * tmp, double precision) {
 
     // если значение max_iterations <= 0, то алгоритм должен выполнятся до получения требуемой точности (без ограничения на число итераций).
     int steps_count = 1;

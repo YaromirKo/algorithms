@@ -1,5 +1,5 @@
 // интерфейс
-#include "task_11_01.h"
+#include "task_20_01.h"
 /// LR с отражениями
 #define ERROR_OPEN_FILE_IN 404
 #define ERROR_OPEN_FILE_OUT 406
@@ -11,10 +11,10 @@
 #define SUCCESS 0
 
 /* определение размера массива дополнительной памяти для модуля sim - модуля упрощения */
-size_t sim_memsize_11_01(int n) { return n * sizeof(double); }
+size_t sim_memsize_20_01(int n) { return n * sizeof(double); }
 
 /* определение размера массива дополнительной памяти для модуля evc - вычислительный модуль */
-size_t evc_memsize_11_01(int n) { return n * sizeof(double); }
+size_t evc_memsize_20_01(int n) { return n * sizeof(double); }
 
 /* сравнение строк */
 int check_str(char * first, char * second, int lim) {
@@ -95,8 +95,8 @@ int main(int argc, char *argv[]) {
     int print__time = 0;   // флаг для печати времени работы алгоритма
     int print__matrix = 0; // флаг для печати входных матриц и матриц после всех преобразований
 
-    char * path_in = "11_01_in.txt";	 // дефолтное имя файла для входных значений
-    char * path_out = "11_01_out.txt"; // дефолтное имя файла для выходных значений
+    char * path_in = "20_01_in.txt";	 // дефолтное имя файла для входных значений
+    char * path_out = "20_01_out.txt"; // дефолтное имя файла для выходных значений
 
     /* проверка входных параметров с консоли */
     for (int i = 1; i < argc; i++) {
@@ -136,8 +136,8 @@ int main(int argc, char *argv[]) {
     /* выделение памяти под массивы */
     A = (double*)malloc(n * n * sizeof(double));
     E = (double*)malloc(n * sizeof(double));
-    tmp_sim = (double*)malloc(sim_memsize_11_01(2 * n * n + n));
-    tmp_evc = (double*)malloc(evc_memsize_11_01(n * n + 2 * n));
+    tmp_sim = (double*)malloc(sim_memsize_20_01(2 * n * n + n));
+    tmp_evc = (double*)malloc(evc_memsize_20_01(n * n + 2 * n));
 
     /* заполнение массива дополнительной памяти */
     for (int i = 0; i < 2 * n; ++i) {
@@ -169,8 +169,8 @@ int main(int argc, char *argv[]) {
     }
 
     start = clock(); // начало работы выполнения алгоритма
-                          sim_11_01(n, A, tmp_sim, precision); // Основная функция модуля упрощения матрицы
-    int answer_code_evc = evc_11_01(n, max_iter, epsilon, A, E, tmp_evc, precision); // Основная функция модуля построения собственных значений матрицы
+                          sim_20_01(n, A, tmp_sim, precision); // Основная функция модуля упрощения матрицы
+    int answer_code_evc = evc_20_01(n, max_iter, epsilon, A, E, tmp_evc, precision); // Основная функция модуля построения собственных значений матрицы
     end = clock();   // конец работы выполнения алгоритма
 
     /* печать матриц после преобразований подпрограммы */
