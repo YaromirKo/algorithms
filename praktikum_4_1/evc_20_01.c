@@ -52,6 +52,7 @@ int evc_20_01(int n, int max_iterations, double epsilon, double * A, double * E,
         for (int i = 1; i < n; ++i) {
             for (int j = 0; j < n; ++j) {
                 if (i - 1 == j) { // элементы 2ой главной диагонали для L
+                    if (fabs(ELEM(tmp, n, (i - 1), (i - 1))) <= precision) continue;
                     ELEM(tmp, n, i, (i - 1)) = ELEM(A, n, i, (i - 1)) / ELEM(tmp, n, (i - 1), (i - 1));
                 }
                 if (i == j || j > i) { // все элементы выше и включая саму диагональ матрицы R

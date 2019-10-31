@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
         return errors(ERROR_EMPTY); // если файл пустой возвращаем ошибку ERROR_EMPTY
     }
 
-    /* если число уравнений в системе (число неизвестных всегда считаем равным числу уравнений) меньше 1, возвращаем ошибку ERROR_DIMENSION */
+    /* если размерность n меньше 1, возвращаем ошибку ERROR_DIMENSION */
     if (n < 1) {
         return errors(ERROR_DIMENSION);
     }
