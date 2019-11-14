@@ -65,6 +65,8 @@ int sim_20_01(int n, double * A, double * tmp, double precision) {
         // отладочная печать - вывод значения нормы X_k
         if (var_for_debug == 1) printf("norm X_k = %lf\n", norm_x_k);
 
+        if (fabs(norm_x_k) <= precision) continue;
+
         // вычисляем вектор x_k
         for (int j = k + 1; j < n; ++j) {
             ELEM(tmp, n, (2 * n), j) /= norm_x_k;
